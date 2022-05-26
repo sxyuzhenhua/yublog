@@ -5,8 +5,12 @@
   "repository": "git@github.com:sxyuzhenhua/yublog.git",
   "author": "wb_yuzhenhua <wb_yuzhenhua@meituan.com>",
   "scripts": {
-      "dev": "vuepress dev docs",
-      "docs:build": "vuepress build docs"
+    "dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
+    "dp": "bash ./deploy.sh"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.9.7"
+  }
 }
