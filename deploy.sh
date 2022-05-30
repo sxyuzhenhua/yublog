@@ -13,6 +13,8 @@ cd docs/.vuepress/dist
 # echo 'www.example.com' > CNAME
 
 git init
+git config user.name 'sxyuzhenhua'
+git config user.email 'sxyuzhenhua@163.com'
 git add -A
 git commit -m 'deploy'
 
@@ -20,6 +22,6 @@ git commit -m 'deploy'
 # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git master
 
 # 如果发布到 https://<USERNAME>.github.io/<REPO>
-git push -f git@github.com:sxyuzhenhua/yublog.git main:gh-pages
+git push -f git@github.com:sxyuzhenhua/yublog.git master:gh-pages
 
 cd -

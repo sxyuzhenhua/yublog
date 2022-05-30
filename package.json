@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:sxyuzhenhua/yublog.git",
-  "author": "wb_yuzhenhua <wb_yuzhenhua@meituan.com>",
+  "author": "sxyuzhenhua <sxyuzhenhua@163.com>",
   "scripts": {
-    "dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
-    "dp": "bash ./deploy.sh"
+    "dev": "vuepress dev ./docs",
+    "docs:build": "vuepress build ./docs",
+    "dp": "sh ./deploy.sh"
   },
   "license": "MIT",
   "devDependencies": {
-    "vuepress": "^1.9.7"
+    "vuepress": "^0.14.8"
   }
 }
