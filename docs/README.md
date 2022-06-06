@@ -1,5 +1,4 @@
 # In English
 
-:::tip WIP
-In translation, welcome PR
-:::
+### 收藏的网址
+http://caibaojian.com/vue-design/art/
