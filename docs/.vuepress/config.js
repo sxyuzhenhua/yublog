@@ -32,6 +32,11 @@ module.exports = {
                     ['/zh/浏览器原理', '浏览器原理'],
                     ['/zh/抓包工具', '抓包工具'],
                     ['/zh/面试', '面试'],
+                    ['/zh/React', 'React'],
+                    ['/zh/Redux', 'Redux'],
+                    ['/zh/react-router', 'react-router'],
+
+
                 ],
                 nav: [
                     // { text: '捐赠者名单', link: '/zh/donor-list' },
