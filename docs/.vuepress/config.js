@@ -28,6 +28,8 @@ module.exports = {
                 label: '简体中文',
                 editLinkText: '在 GitHub 上编辑此页',
                 sidebar: [
+                    ['/zh/Vue的CSS的Scoped原理', 'Vue的CSS的Scoped原理'],
+                    ['/zh/设计模式', '设计模式'],
                     ['/zh/webpack', 'webpack'],
                     ['/zh/浏览器原理', '浏览器原理'],
                     ['/zh/抓包工具', '抓包工具'],
@@ -35,7 +37,7 @@ module.exports = {
                     ['/zh/React', 'React'],
                     ['/zh/Redux', 'Redux'],
                     ['/zh/react-router', 'react-router'],
-
+                    ['/zh/npm发布', 'npm发布'],
 
                 ],
                 nav: [

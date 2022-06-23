@@ -1784,6 +1784,367 @@ const ArticleView = ({ id }) => {
 ```
 
 ## 函数组件设计模式：如何应对复杂条件渲染场景？
+### 容器模式：实现按条件执行 Hooks
+对话框组件，通过 visible 属性来控制是否显示。那么在 visible 为 false 的时候，其实不应该执行任何对话框内部的逻辑，因为还没展示在 UI 上。
+
+
+下面的代码会报错：
+
+```
+import { Modal } from "antd";
+import useUser from "../09/useUser";
+
+function UserInfoModal({ visible, userId, ...rest }) {
+  // 当 visible 为 false 时，不渲染任何内容
+  if (!visible) return null;
+  // 这一行 Hook 在可能的 return 之后，会报错！
+  const { data, loading, error } = useUser(userId);
+
+  return (
+    <Modal visible={visible} {...rest}>
+      {/* 对话框的内容 */}
+    </Modal>
+  );
+};
+```
+
+具体做法就是**把条件判断的结果放到两个组件之中，确保真正 render UI 的组件收到的所有属性都是有值的。**
+
+```
+// 定义一个容器组件用于封装真正的 UserInfoModal
+export default function UserInfoModalWrapper({
+  visible,
+  ...rest, // 使用 rest 获取除了 visible 之外的属性
+}) {
+  // 如果对话框不显示，则不 render 任何内容
+  if (!visible) return null; 
+  // 否则真正执行对话框的组件逻辑
+  return <UserInfoModal visible {...rest} />;
+}
+```
+
+**还有一种做法，就是把判断条件放到 Hooks 中去。**
+
+```
+const ArticleView = ({ id }) => {
+  const { data: article, loading } = useArticle(id);
+  let user = null;
+  if (article?.userId) user = useUser(article?.userId).data;
+  // 组件其它逻辑
+}
+```
+
+
+```
+function useUser(id) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    // 当 id 不存在，直接返回，不发送请求
+    if (!id) return
+    // 获取用户信息的逻辑
+  });
+}
+```
+
+### 使用 render props 模式重用 UI 逻辑
+**把一个 render 函数作为属性传递给某个组件，由这个组件去执行这个函数从而 render 实际的内容。**
+
+**Hooks 有一个局限，那就是只能用作数据逻辑的重用,即使有了 Hooks，我们也要掌握 render props 这个设计模式的用法。**
+
+
+![](@imgs/counter.png)
+
+renderProps实现：
+
+##### 例子1:
+```
+import { useState, useCallback } from "react";
+
+function CounterRenderProps({ children }) {
+  const [count, setCount] = useState(0);
+  const increment = useCallback(() => {
+    setCount(count + 1);
+  }, [count]);
+  const decrement = useCallback(() => {
+    setCount(count - 1);
+  }, [count]);
+
+  return children({ count, increment, decrement });
+}
+
+// 如何使用
+function CounterRenderPropsExample() {
+  return (
+    <CounterRenderProps>
+      {({ count, increment, decrement }) => {
+        return (
+          <div>
+            <button onClick={decrement}>-</button>
+            <span>{count}</span>
+            <button onClick={increment}>+</button>
+          </div>
+        );
+      }}
+    </CounterRenderProps>
+  );
+}
+```
+
+**只需要把这个 render 函数作为属性传递给组件就可以了**
+
+
+
+##### 例子2:
+```
+import { Popover } from "antd";
+
+function ListWithMore({ renderItem, data = [], max }) {
+  const elements = data.map((item, index) => renderItem(item, index, data));
+  const show = elements.slice(0, max);
+  const hide = elements.slice(max);
+  return (
+    <span className="exp-10-list-with-more">
+      {show}
+      {hide.length > 0 && (
+        <Popover content={<div style={{ maxWidth: 500 }}>{hide}</div>}>
+          <span className="more-items-wrapper">
+            and{" "}
+            <span className="more-items-trigger"> {hide.length} more...</span>
+          </span>
+        </Popover>
+      )}
+    </span>
+  );
+}
+```
+
+
+
+```
+// 这里用一个示例数据
+import data from './data';
+
+function ListWithMoreExample () => {
+  return (
+    <div className="exp-10-list-with-more">
+      <h1>User Names</h1>
+      <div className="user-names">
+        Liked by:{" "}
+        <ListWithMore
+          renderItem={(user) => {
+            return <span className="user-name">{user.name}</span>;
+          }}
+          data={data}
+          max={3}
+        />
+      </div>
+      <br />
+      <br />
+      <h1>User List</h1>
+      <div className="user-list">
+        <div className="user-list-row user-list-row-head">
+          <span className="user-name-cell">Name</span>
+          <span>City</span>
+          <span>Job Title</span>
+        </div>
+        <ListWithMore
+          renderItem={(user) => {
+            return (
+              <div className="user-list-row">
+                <span className="user-name-cell">{user.name}</span>
+                <span>{user.city}</span>
+                <span>{user.job}</span>
+              </div>
+            );
+          }}
+          data={data}
+          max={5}
+        />
+      </div>
+    </div>
+  );
+};
+```
+
+
+## 事件处理：如何创建自定义事件？
+在 React 中使用原生事件
+
+```
+// 约定使用骆驼体（Camel Case）
+<button onClick={handler}>Hello</button> 
+
+```
+
+其实是否需要 useCallback ，**和函数的复杂度没有必然关系，而是和回调函数绑定到哪个组件有关**。这是为了避免因组件属性变化而导致不必要的重新渲染。
+
+而对于原生的 DOM 节点，比如 button、input 等，我们是不用担心重新渲染的。所以呢，如果你的事件处理函数是传递给原生节点，那么不写 callback，也几乎不会有任何性能的影响。
+
+但是**如果你使用的是自定义组件，或者一些 UI 框架的组件，那么回调函数还都应该用 useCallback 进行封装**。
+
+###  React 原生事件的原理：合成事件（Synthetic Events）
+在 React 17 之前，所有的事件都是绑定在 document 上的，而从 React 17 开始，所有的事件都绑定在整个 App 上的根节点上
+
+* 第一，虚拟 DOM render 的时候， DOM 很可能还没有真实地 render 到页面上，所以无法绑定事件。
+* 第二，React 可以屏蔽底层事件的细节，避免浏览器的兼容性问题。同时呢，对于 React Native 这种不是通过浏览器 render 的运行时，也能提供一致的 API。
+
+无论事件在哪个节点被触发， React 都可以通过事件的 srcElement 这个属性
+
+### 创建自定义事件
+父子组件之间的通信，props 和 自定义事件
+
+##### 虽然自定义事件和原生事件看上去类似，但是两者的机制是完全不一样的：
+* 原生事件是浏览器的机制；
+* 而自定义事件则是纯粹的组件自己的行为，本质是一种回调函数机制。
+
+实现一个 on/off 的切换按钮
+
+```
+import { useState } from "react";
+
+// 创建一个无状态的受控组件
+function ToggleButton({ value, onChange }) {
+  const handleClick = () => {
+    onChange(!value);
+  };
+  return (
+    <button style={{ width: "60px" }} onClick={handleClick}>
+      <span>{value ? "On" : "Off"}</span>
+    </button>
+  );
+}
+
+
+import { useState } from "react";
+import ToggleButton from './ToggleButton';
+
+function ToggleButtonExample() {
+  const [on, setOn] = useState(true);
+  return (
+    <>
+      <h1>Toggle Button</h1>
+      <ToggleButton value={on} onChange={(value) => setOn(value)} />
+    </>
+  );
+};
+```
+
+
+### 使用 Hooks 封装键盘事件开
+```
+import { useEffect, useState } from "react";
+
+// 使用 document.body 作为默认的监听节点
+const useKeyPress = (domNode = document.body) => {
+  const [key, setKey] = useState(null);
+  useEffect(() => {
+    const handleKeyPress = (evt) => {
+      setKey(evt.keyCode);
+    };
+    // 监听按键事件
+    domNode.addEventListener("keypress", handleKeyPress);
+    return () => {
+      // 接触监听按键事件
+      domNode.removeEventListener("keypress", handleKeyPress);
+    };
+  }, [domNode]);
+  return key;
+};
+
+
+import useKeyPress from './useKeyPress';
+
+function UseKeyPressExample() => {
+  const key = useKeyPress();
+  return (
+    <div>
+      <h1>UseKeyPress</h1>
+      <label>Key pressed: {key || "N/A"}</label>
+    </div>
+  );
+};
+```
+
+## Form：Hooks 给 Form 处理带来了哪些新变化？
+
+### 在表单中使用 React 组件：受控组件和非受控组件
+####  表单中的元素都是受控组件。也就是说，一个表单组件的状态完全由 React 管控。但是在有的时候，为了避免太多的重复渲染，我们也会选择非受控组件。
+
+**受控组件**
+
+```
+function MyForm() {
+  const [value, setValue] = useState('');
+  const handleChange = useCallback(evt => {
+    setValue(evt.target.value);
+  }, []);
+  return <input value={value} onChange={handleChange} />;
+}
+```
+
+可以看到，输入框的值是由传入的 value 属性决定的。在 onChange 的事件处理函数中，我们设置了 value 这个状态的值，这样输入框就显示了用户的输入。
+
+需要注意的是，React 统一了表单组件的 onChange 事件，这样的话，用户不管输入什么字符，都会触发 onChange 事件。而标准的 input 的 onchange 事件，则只有当输入框失去焦点时才会触发。React 的这种 onChange 的机制，其实让我们对表单组件有了更灵活的控制。
+
+不过，受控组件的这种方式虽然统一了表单元素的处理，有时候却会产生性能问题。因为用户每输入一个字符，React 的状态都会发生变化，那么整个组件就会重新渲染。所以如果表单比较复杂，那么每次都重新渲染，就可能会引起输入的卡顿。在这个时候，我们就可以将一些表单元素使用非受控组件去实现，从而避免性能问题。
+
+**非受控组件**，就是表单元素的值不是由父组件决定的，而是完全内部的状态。联系第 8 讲提到的唯一数据源的原则，一般我们就不会再用额外的 state 去保存某个组件的值。而是在需要使用的时候，直接从这个组件获取值。
+
+```
+import { useRef } from "react";
+
+export default function MyForm() {
+  // 定义一个 ref 用于保存 input 节点的引用
+  const inputRef = useRef();
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    // 使用的时候直接从 input 节点获取值
+    alert("Name: " + inputRef.current.value);
+  };
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Name:
+        <input type="text" ref={inputRef} />
+      </label>
+      <input type="submit" value="Submit" />
+    </form>
+  );
+}
+```
+
+可以看到，通过非受控组件的方式，input 的输入过程对整个组件状态没有任何影响，自然也就不会导致组件的重新渲染。
+
+
+不过缺点也是明显的，输入过程因为没有对应的状态变化，因此要动态地根据用户输入做 UI 上的调整就无法做到了。出现这种情况，主要也是因为所有的用户输入都是 input 这个组件的内部状态，没有任何对外的交互。
+
+
+总结来说，在实际的项目中，我们一般都是用的受控组件，这也是 React 官方推荐的使用方式。不过对于一些个别的场景，比如对性能有极致的要求，那么非受控组件也是一种不错的选择。
+
+### 使用 Hooks 简化表单处理
+
+* 1. 设置一个 State 用于绑定到表单元素的 value；
+* 2. 监听表单元素的 onChange 事件，将表单值同步到 value 这个 state。
+
+```
+function MyForm() {
+  const [value1, setValue1] = useState();
+  const [value2, setValue2] = useState();
+  // 更多表单元素状态...
+  
+  return (
+    <form>
+      <Field1 value={value1} onChange={setValue1} />
+      <Field1 value={value2} onChange={setValue2} />
+      {/*更多表单元素*/}
+    </form>
+  )
+}
+```
+
+
 
 
 
