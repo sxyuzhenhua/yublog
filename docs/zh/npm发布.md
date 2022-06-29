@@ -35,7 +35,10 @@ npm install uba-server -D
 ```
 npm install uba-server@next -D
 ```
-
+### 发版测试版本： 通过  beta 标识 tag 和版本，这样的话，发布的测试版就不会被 npm 和 yarn 等自动安装
+```
+npm publish --tag=beta
+```
 
 ### 总结
 1. npm publish --tag next 发布tag
