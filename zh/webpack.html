@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>一、介绍 | 渲染器</title>
+    <meta name="description" content="也许是讲渲染器相关内容中最细最全的了吧">
+    
+    
+    <link rel="preload" href="/yublog/assets/css/0.styles.2be786d9.css" as="style"><link rel="preload" href="/yublog/assets/js/app.37e56814.js" as="script"><link rel="preload" href="/yublog/assets/js/14.4169265d.js" as="script"><link rel="prefetch" href="/yublog/assets/js/10.891e66a3.js"><link rel="prefetch" href="/yublog/assets/js/11.9ccbd59b.js"><link rel="prefetch" href="/yublog/assets/js/12.73e8c7ba.js"><link rel="prefetch" href="/yublog/assets/js/13.a48112d4.js"><link rel="prefetch" href="/yublog/assets/js/15.3071b19d.js"><link rel="prefetch" href="/yublog/assets/js/16.f9d88530.js"><link rel="prefetch" href="/yublog/assets/js/17.c1ab2bac.js"><link rel="prefetch" href="/yublog/assets/js/18.bb240c5d.js"><link rel="prefetch" href="/yublog/assets/js/19.4491ed2b.js"><link rel="prefetch" href="/yublog/assets/js/2.530ddd4d.js"><link rel="prefetch" href="/yublog/assets/js/3.a7947606.js"><link rel="prefetch" href="/yublog/assets/js/4.518986e4.js"><link rel="prefetch" href="/yublog/assets/js/5.62c60af0.js"><link rel="prefetch" href="/yublog/assets/js/6.88e275c6.js"><link rel="prefetch" href="/yublog/assets/js/7.112b3033.js"><link rel="prefetch" href="/yublog/assets/js/8.d1d6dc10.js"><link rel="prefetch" href="/yublog/assets/js/9.20ad09d8.js">
+    <link rel="stylesheet" href="/yublog/assets/css/0.styles.2be786d9.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/yublog/zh/" class="home-link router-link-active"><!----> <span class="site-name">渲染器</span></a> <div class="links" style="max-width:nullpx;"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Languages</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/yublog/" class="nav-link">English</a></li><li class="dropdown-item"><!----> <a href="/yublog/zh/webpack.html" aria-current="page" class="nav-link router-link-exact-active router-link-active">简体中文</a></li></ul></div></div> <a href="https://github.com/sxyuzhenhua/yublog" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar"><nav class="nav-links"><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Languages</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/yublog/" class="nav-link">English</a></li><li class="dropdown-item"><!----> <a href="/yublog/zh/webpack.html" aria-current="page" class="nav-link router-link-exact-active router-link-active">简体中文</a></li></ul></div></div> <a href="https://github.com/sxyuzhenhua/yublog" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><a href="/yublog/zh/Vue的CSS的Scoped原理.html" class="sidebar-link">Vue的CSS的Scoped原理</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/Vue的CSS的Scoped原理.html#vue的css的scoped原理" class="sidebar-link">Vue的CSS的Scoped原理</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/Vue的CSS的Scoped原理.html#缺点" class="sidebar-link">缺点</a></li></ul></li></ul></li><li><a href="/yublog/zh/设计模式.html" class="sidebar-link">设计模式</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/设计模式.html#typescript在线编辑" class="sidebar-link">typescript在线编辑</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/设计模式.html#面向对象" class="sidebar-link">面向对象</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/设计模式.html#继承" class="sidebar-link">继承</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/设计模式.html#封装" class="sidebar-link">封装</a></li></ul></li></ul></li><li><a href="/yublog/zh/webpack.html" aria-current="page" class="active sidebar-link">webpack</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/webpack.html#一、介绍" class="sidebar-link">一、介绍</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/webpack.html#二、环境差异" class="sidebar-link">二、环境差异</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/webpack.html#三、publicpath-区别" class="sidebar-link">三、publicPath 区别</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/webpack.html#四、babel-loader-babel-core-预设-的关系" class="sidebar-link">四、babel-loader &amp; @babel/core &amp; 预设 的关系</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/webpack.html#五、sourcemap" class="sidebar-link">五、SourceMap</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/webpack.html#六、-mpa多页面配置" class="sidebar-link">六、 MPA多页面配置</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/webpack.html#七、引入第三方类库-lodash，jquery）" class="sidebar-link">七、引入第三方类库(lodash，jquery）</a></li></ul></li><li><a href="/yublog/zh/浏览器原理.html" class="sidebar-link">浏览器原理</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#chrome架构" class="sidebar-link">Chrome架构</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#先区分进程和线程" class="sidebar-link">先区分进程和线程</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#进程与线程的关系" class="sidebar-link">进程与线程的关系</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#单进程浏览器时代" class="sidebar-link">单进程浏览器时代</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#多进程浏览器时代" class="sidebar-link">多进程浏览器时代</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#目前多进程架构" class="sidebar-link">目前多进程架构</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#http请求流程：为什么很多站点第二次打开速度会很快？" class="sidebar-link">HTTP请求流程：为什么很多站点第二次打开速度会很快？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#浏览器端发起-http-请求流程" class="sidebar-link">浏览器端发起 HTTP 请求流程</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#chrome开发者工具-性能分析" class="sidebar-link">Chrome开发者工具(性能分析)</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#网络面板" class="sidebar-link">网络面板</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#优化时间线上耗时项" class="sidebar-link">优化时间线上耗时项</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#渲染总体过程" class="sidebar-link">渲染总体过程</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#javascript-是如何影响-dom-树构建的" class="sidebar-link">Javascript 是如何影响 DOM 树构建的</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#dom-树" class="sidebar-link">DOM 树</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#dom-树生成" class="sidebar-link">DOM 树生成</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#javascript-是如何影响-dom-生成的" class="sidebar-link">JavaScript 是如何影响 DOM 生成的</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#css如何影响首次加载时的白屏时间？" class="sidebar-link">CSS如何影响首次加载时的白屏时间？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#最简单的" class="sidebar-link">最简单的</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#稍微复杂一点的" class="sidebar-link">稍微复杂一点的</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#再复杂一点的" class="sidebar-link">再复杂一点的</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#为什么css-动画比-javascript-高效" class="sidebar-link">为什么CSS 动画比 Javascript 高效</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#如何利用分层技术优化代码" class="sidebar-link">如何利用分层技术优化代码</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#如何系统的优化页面" class="sidebar-link">如何系统的优化页面</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#典型的加载阶段渲染流水线" class="sidebar-link">典型的加载阶段渲染流水线:</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#影响页面首次渲染的核心因素" class="sidebar-link">影响页面首次渲染的核心因素</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#如何减少关键资源的个数？" class="sidebar-link">如何减少关键资源的个数？</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#如何减少关键资源的大小？" class="sidebar-link">如何减少关键资源的大小？</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#如何减少关键资源-rtt-的次数？" class="sidebar-link">如何减少关键资源 RTT 的次数？</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#交互阶段优化" class="sidebar-link">交互阶段优化</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#虚拟dom和实际的dom有何不同？" class="sidebar-link">虚拟DOM和实际的DOM有何不同？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#dom-缺陷" class="sidebar-link">DOM 缺陷</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#什么是虚拟-dom" class="sidebar-link">什么是虚拟 DOM</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#双缓存" class="sidebar-link">双缓存</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#mvc-模式" class="sidebar-link">MVC 模式</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#渐进式网页应用（pwa）" class="sidebar-link">渐进式网页应用（PWA）</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#什么是-pwa？pwa-又是以什么方式切入到移动端的呢？" class="sidebar-link">什么是 PWA？PWA 又是以什么方式切入到移动端的呢？</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#web-应用-vs-本地应用" class="sidebar-link">Web 应用 VS 本地应用</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#什么是-service-worker" class="sidebar-link">什么是 Service Worker</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#service-worker-的设计思路" class="sidebar-link">Service Worker 的设计思路</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#webcomponent-搭积木构建web应用" class="sidebar-link">WebComponent(搭积木构建Web应用)</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#什么是组件化呢？" class="sidebar-link">什么是组件化呢？</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#阻碍前端组件化的因素" class="sidebar-link">阻碍前端组件化的因素</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#webcomponent-组件化开发" class="sidebar-link">WebComponent 组件化开发</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#浏览器如何实现影子-dom" class="sidebar-link">浏览器如何实现影子 DOM</a></li></ul></li></ul></li><li><a href="/yublog/zh/抓包工具.html" class="sidebar-link">抓包工具</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/抓包工具.html#whistle" class="sidebar-link">whistle</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/抓包工具.html#wireshark" class="sidebar-link">Wireshark</a></li></ul></li><li><a href="/yublog/zh/面试.html" class="sidebar-link">面试</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#关于循环-await-异步面试题" class="sidebar-link">关于循环 + await 异步面试题</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#对两个版本号进行大小比较" class="sidebar-link">对两个版本号进行大小比较</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#实现多维对象的扁平化处理" class="sidebar-link">实现多维对象的扁平化处理</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#实现对“url问号传参”的解析" class="sidebar-link">实现对“URL问号传参”的解析</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#阿拉伯数字转为中文数字" class="sidebar-link">阿拉伯数字转为中文数字</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#将一维数组转换成树形结构" class="sidebar-link">将一维数组转换成树形结构</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#在多维数据结构中，按条件实现深层查找" class="sidebar-link">在多维数据结构中，按条件实现深层查找</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#基于js实现-均匀运动-的动画" class="sidebar-link">基于JS实现 &quot;均匀运动&quot; 的动画</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#关于规避请求失败，递归获取需要数据的问题" class="sidebar-link">关于规避请求失败，递归获取需要数据的问题</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#仿抖音发布视频时的-“-话题解析”-逻辑" class="sidebar-link">仿抖音发布视频时的 “#话题解析” 逻辑</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#词法环境，变量环境，outer-作用域链-和-this" class="sidebar-link">(词法环境，变量环境，outer)[作用域链]   和 this</a></li></ul></li><li><a href="/yublog/zh/React.html" class="sidebar-link">React</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#生命周期" class="sidebar-link">生命周期</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#使用第三方库-d3" class="sidebar-link">使用第三方库, d3</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#hooks" class="sidebar-link">Hooks</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#usestate：让函数组件具有维持状态的能力" class="sidebar-link">useState：让函数组件具有维持状态的能力</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#useeffect：执行副作用" class="sidebar-link">useEffect：执行副作用</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#useeffect-还有两个特殊的用法：-没有依赖项，以及依赖项作为空数组。" class="sidebar-link">useEffect 还有两个特殊的用法： 没有依赖项，以及依赖项作为空数组。</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#理解-hooks-的依赖" class="sidebar-link">理解 Hooks 的依赖</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#掌握-hooks-的使用规则" class="sidebar-link">掌握 Hooks 的使用规则</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#为什么要避免重复定义回调函数？" class="sidebar-link">为什么要避免重复定义回调函数？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#usecallback：缓存回调函数" class="sidebar-link">useCallback：缓存回调函数</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#usememo：缓存计算的结果" class="sidebar-link">useMemo：缓存计算的结果</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#useref：在多次渲染之间共享数据" class="sidebar-link">useRef：在多次渲染之间共享数据</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#usecontext：定义全局状态" class="sidebar-link">useContext：定义全局状态</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#如何正确理解函数组件的生命周期？" class="sidebar-link">如何正确理解函数组件的生命周期？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#重新思考组件的生命周期" class="sidebar-link">重新思考组件的生命周期</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#自定义hooks-：四个典型的使用场景" class="sidebar-link">自定义Hooks ：四个典型的使用场景</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#如何创建自定义-hooks？" class="sidebar-link">如何创建自定义 Hooks？</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#封装通用逻辑：useasync" class="sidebar-link">封装通用逻辑：useAsync</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#监听浏览器状态：usescroll" class="sidebar-link">监听浏览器状态：useScroll</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#拆分复杂组件" class="sidebar-link">拆分复杂组件</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#全局状态管理：如何在函数组件中使用-redux？" class="sidebar-link">全局状态管理：如何在函数组件中使用 Redux？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#理解-redux-的三个基本概念" class="sidebar-link">理解 Redux 的三个基本概念</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#如何在-react-中使用-redux" class="sidebar-link">如何在 React 中使用 Redux</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#使用-redux-处理异步逻辑" class="sidebar-link">使用 Redux 处理异步逻辑</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#复杂状态处理：如何保证状态一致性？" class="sidebar-link">复杂状态处理：如何保证状态一致性？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#实战演练：创建自定义受控组件" class="sidebar-link">实战演练：创建自定义受控组件</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#异步处理：如何向服务器端发送请求？" class="sidebar-link">异步处理：如何向服务器端发送请求？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#实现自己的-api-client" class="sidebar-link">实现自己的 API Client</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#多个-api-调用：如何处理并发或串行请求？" class="sidebar-link">多个 API 调用：如何处理并发或串行请求？</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#函数组件设计模式：如何应对复杂条件渲染场景？" class="sidebar-link">函数组件设计模式：如何应对复杂条件渲染场景？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#容器模式：实现按条件执行-hooks" class="sidebar-link">容器模式：实现按条件执行 Hooks</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#使用-render-props-模式重用-ui-逻辑" class="sidebar-link">使用 render props 模式重用 UI 逻辑</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#事件处理：如何创建自定义事件？" class="sidebar-link">事件处理：如何创建自定义事件？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#react-原生事件的原理：合成事件（synthetic-events）" class="sidebar-link">React 原生事件的原理：合成事件（Synthetic Events）</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#创建自定义事件" class="sidebar-link">创建自定义事件</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#使用-hooks-封装键盘事件开" class="sidebar-link">使用 Hooks 封装键盘事件开</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#form：hooks-给-form-处理带来了哪些新变化？" class="sidebar-link">Form：Hooks 给 Form 处理带来了哪些新变化？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#在表单中使用-react-组件：受控组件和非受控组件" class="sidebar-link">在表单中使用 React 组件：受控组件和非受控组件</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#使用-hooks-简化表单处理" class="sidebar-link">使用 Hooks 简化表单处理</a></li></ul></li></ul></li><li><a href="/yublog/zh/Redux.html" class="sidebar-link">Redux</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/Redux.html#一、不可变数据" class="sidebar-link">一、不可变数据</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/Redux.html#二、为啥需要不可变数据" class="sidebar-link">二、为啥需要不可变数据</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/Redux.html#三、如何操作不可变数据" class="sidebar-link">三、如何操作不可变数据</a></li></ul></li><li><a href="/yublog/zh/react-router.html" class="sidebar-link">react-router</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/react-router.html#react-router-api" class="sidebar-link">React Router API</a></li></ul></li><li><a href="/yublog/zh/npm发布.html" class="sidebar-link">npm发布</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#package-json-版本区别（～-lastest）" class="sidebar-link">package.json  版本区别（～ ^ lastest）</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#查看" class="sidebar-link">查看</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#查看具体的dist-tag-包括prerelease与稳定版本" class="sidebar-link">查看具体的dist-tag (包括prerelease与稳定版本)</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#发布一个带tag的版本" class="sidebar-link">发布一个带tag的版本</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#切换版本" class="sidebar-link">切换版本</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#用户默认安装的版本就是latest" class="sidebar-link">用户默认安装的版本就是latest</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#如何安装tag版本" class="sidebar-link">如何安装tag版本</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#总结" class="sidebar-link">总结</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#发布测试包，不影响线上安装latest" class="sidebar-link">发布测试包，不影响线上安装latest</a></li></ul></li></ul></li><li><a href="/yublog/zh/杂.html" class="sidebar-link">杂</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/杂.html#主要记录平时工作中遇到的一些点" class="sidebar-link">主要记录平时工作中遇到的一些点</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/杂.html#window-addeventlistener-pushstate-handler-不管用" class="sidebar-link">window.addEventListener('pushstate', handler) 不管用</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/杂.html#低代码：" class="sidebar-link">低代码：</a></li></ul></li></ul></li><li><a href="/yublog/zh/如何在项目中落地TS.html" class="sidebar-link">如何在项目中落地TS</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/yublog/zh/Vue3.html" class="sidebar-link">Vue3</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/Vue3.html#vue3-0-性能提升" class="sidebar-link">VUE3.0 性能提升</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/Vue3.html#编译阶段" class="sidebar-link">编译阶段</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/Vue3.html#源码体积" class="sidebar-link">源码体积</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/Vue3.html#响应式系统" class="sidebar-link">响应式系统</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/Vue3.html#为什么用proxy-替代-defineproperty" class="sidebar-link">为什么用proxy  替代 defineProperty</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/Vue3.html#defineproperty" class="sidebar-link">DefineProperty</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/Vue3.html#proxy" class="sidebar-link">Proxy</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/Vue3.html#composition-api-与-optional-api" class="sidebar-link">Composition API 与 optional API</a></li></ul></li></ul> </div> <div class="page"> <div class="content"><h2 id="一、介绍"><a href="#一、介绍" class="header-anchor">#</a> 一、介绍</h2> <p>本质上，webpack是一个用于现代javascript应用程序的静态模块打包工具，当 webpck 处理应用程序时，会内部构建一个依赖图(dependency graph), 此依赖图对应的映射到项目所需要的每一个模块，并生成一个或多个bundle.</p> <div class="language- extra-class"><pre class="language-text"><code>npm  install webpack webpack-cli 
+</code></pre></div><h2 id="二、环境差异"><a href="#二、环境差异" class="header-anchor">#</a> 二、环境差异</h2> <ul><li>开发环境： 需要生成sourcemap文件； 需要打印debug信息；需要live reload 和 hot reload 的功能；</li> <li>生产环境：可能需要分离css 成单独的文件，以使多个页面共享同一个CSS文件； 需要压缩HTML/CSS/JS 代码； 需要压缩图片</li></ul> <h2 id="三、publicpath-区别"><a href="#三、publicpath-区别" class="header-anchor">#</a> 三、publicPath 区别</h2> <div class="language- extra-class"><pre class="language-text"><code>const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+module.exports = {
+​    mode: 'development',
+​    entry: './src/index.js',
+​    output: {
+​        path: path.resolve(__dirname, 'dist'),  
+​        filename: 'main.js',
+​        publicPath: '/devmiddlepath' 
+​    },
+​    devServer: {
+​        port: 8000,
+​        open: true,
+​        hot: true,
+​        static: {
+​            directory: path.join(__dirname, 'assets'),
+​            publicPath: '/staticfile', 
+​        },
+​        devMiddleware: {
+​            index: true,
+​            publicPath: '/devmiddlepath',
+​        }
+​    },
+​    plugins: [
+​        new HtmlWebpackPlugin({
+​            template: './public/index.html',
+​            filename: 'index.html'
+​        })
+​    ]
+}
+</code></pre></div><h2 id="四、babel-loader-babel-core-预设-的关系"><a href="#四、babel-loader-babel-core-预设-的关系" class="header-anchor">#</a> 四、babel-loader &amp; @babel/core &amp; 预设 的关系</h2> <ul><li>babel-loader:  作用是调用@babel/core；</li> <li>@babel/core: 提供过程管理，把源代码转换成抽象语法树，本身并不知道具体转什么语法，靠预设；</li> <li>预设（presets）：可以理解为各种plugins的集合</li></ul> <blockquote><ol><li>先把ES6转成抽象语法树；@babel/core;</li> <li>然后调用preset-env把ES6语法树转成ES5语法树; preset-env;</li> <li>把ES5语法树转成ES5代码；@babel/core;</li></ol></blockquote> <h4 id="_4-1-babel-loader"><a href="#_4-1-babel-loader" class="header-anchor">#</a> 4.1 babel-loader</h4> <div class="language- extra-class"><pre class="language-text"><code>const core = require('@babel/core')
+const path = require('path');
+function loader(source, inputSourceMap, overrides) {
+​    const options = {
+​        presets: ['@babel/preset-env'],
+​        inputSourceMap,
+​        sourceMaps: true,
+​        filename: path.basename(this.resourcePath)
+​    }
+​    const {code, map, ast} = core.transform(source, options)
+​    return this.callback(null, code, map, ast);
+}
+module.exports = loader;
+</code></pre></div><h4 id="_4-2-使用自定义的-loader-三种方法"><a href="#_4-2-使用自定义的-loader-三种方法" class="header-anchor">#</a> 4.2 使用自定义的 loader 三种方法</h4> <div class="language- extra-class"><pre class="language-text"><code>​    resolveLoader: {
+​        modules: [path.resolve('./loaders'), 'node_modules'] 
+​    },
+​    module: {
+​        rules: [
+​            {
+​                test: /.jsx?$/,
+​                use: [ path.resolve('./loaders/babel-loader.js')]  
+​            },
+​        ]
+​    },
+</code></pre></div><h4 id="_4-3-babel-polyfill-babel-runtime-babel-plugin-transform-runtime"><a href="#_4-3-babel-polyfill-babel-runtime-babel-plugin-transform-runtime" class="header-anchor">#</a> 4.3 babel-polyfill &amp;&amp; babel-runtime &amp;&amp; babel-plugin-transform-runtime</h4> <p>webpack 使用babel:   npm install -D babel-loader @babel/core @babel/preset-env webpack</p> <h5 id="_4-3-1-babel-polyfill"><a href="#_4-3-1-babel-polyfill" class="header-anchor">#</a> 4.3.1 babel-polyfill</h5> <ul><li>Babel默认只转换新的 javascript 的语法，而不转换新的API，比如 Iterator，Generator, Set, Map, Proxy, Reflect, Symbol, Promise等全局对象，以及一些在全局对象上的方法，比如Object.assign,都不会转码；</li> <li>比如,  ES6在Array对象上新增了 Array.from 方法，Babel就不会转码这个方法，如果想让这个方法运行，就必须使用babel-polyfill 来转换等；</li> <li>babel-polyfill 是通过向全局对象和内置的prototype上添加方法来实现的，比如运行环境中不支持Array.find, 引入polyfill ，我们就可以使用es6方法来编写了，但是缺点就是会造成全局污染；</li> <li>@babel/preset-env 为每一个环境的预设；<br>
+&quot;useBuiltIns&quot;: false        此时不对polyfill做操作，如果引入@babel-polyfill,则无视配置的浏览器兼容，引入所有的polyfill；<br>
+&quot;useBuiltIns&quot;: &quot;entry&quot;    根据配置的浏览器兼容，引入浏览器不兼容的polyfill,需要在入口文件手动添加 import &quot;@babel-plyfill&quot;，会自动根据browserlist 替换成浏览器不兼容的polyfill;需要手动引入；<br>
+&quot;useBuiltIns&quot;: &quot;usage&quot;   需要的时候在自动引入，不需要手动引入；</li></ul> <blockquote><p>import 'core-js/stable.js'<br>
+import 'regenerator-runtime/runtime'<br> <img src="/image/1523927904.png" alt="执行结果" title="执行结果截图index"> <strong>如何使用babel-polyfill</strong></p></blockquote> <div class="language- extra-class"><pre class="language-text"><code>require(&quot;@babel/polyfill&quot;);
+</code></pre></div><h5 id="_4-3-2-babel-runtime"><a href="#_4-3-2-babel-runtime" class="header-anchor">#</a> 4.3.2 babel-runtime</h5> <ul><li>Babel为了解决全局空间污染的问题，提供了单独的babel-polyfill ；重新构造，所以体积比较大；</li> <li>简单的说，babel-runtime 更像是一种按需加载的实现，哪里需要使用 Promise , 只要在这个文件头部 import Promise from 'babel-runtime/core-js/promise'</li></ul> <div class="language- extra-class"><pre class="language-text"><code>const Promise = require ('@babel/runtime-corejs2/core-js/promise.js');
+export const p = new Promise((resolve, reject) =&gt; {
+​    console.log(9999);
+​    resolve(true);
+});
+console.log(p)
+</code></pre></div><p><img src="/image/1523818106.png" alt="执行结果"></p> <h5 id="_4-3-3-babel-plugin-transform-runtime"><a href="#_4-3-3-babel-plugin-transform-runtime" class="header-anchor">#</a> 4.3.3 babel-plugin-transform-runtime</h5> <ul><li>启用插件 babel-plugin-transform-runtime 后，Babel就会使用 babel-runtime 下的工具函数; 就是可以在我们使用新的API时自动 import babel-runtime 里面的polyfill</li> <li>当我们使用 async/await 时，自动引入 babel-runtime/regenerator;</li> <li>当我们使用 ES6 的静态事件或者内置对象时，自动引入babel-runtime/core-js;</li> <li>移除内联 babel helpers 并替换使用babel-runtime helpers 来替换；</li></ul> <div class="language- extra-class"><pre class="language-text"><code>loader: 'babel-loader',
+  options: {
+​    presets: ['@babel/preset-env'],
+​    plugins: [
+​      [
+​        '@babel/plugin-transform-runtime', {
+​          &quot;corejs&quot;: 2,
+​        }
+​      ]
+  ]
+}
+</code></pre></div><p><img src="/image/1523992722.png" alt="执行结果"></p> <h2 id="五、sourcemap"><a href="#五、sourcemap" class="header-anchor">#</a> 五、SourceMap</h2> <ul><li>sourcemap是为了解决开发代码与实际运行代码不一致时帮助我们 debug 到原始开发代码的技术</li> <li>webpack 通过配置可以自动给我们 source maps 文件，map 文件是一种对应编译文件和源文件的方法
+<img src="/image/1652864538221.jpg" alt="执行结果"></li></ul> <ul><li>看似配置项很多，其实只是五个关键字eval、 source-map、cheap、 module、和inline的任意组合
+<img src="/image/1652864616350.jpg" alt="执行结果"></li></ul> <ol><li>顺序： [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map</li> <li>new webpack.SourceMapDevToolPlugin({ filename: '[name].js.map', exclude: ['vendor.js'], });</li></ol> <blockquote><ul><li>开发环境： eval-cheap-source-map,  cheap-module-source-map , =&gt; eval-source-map</li> <li>正式环境：hidden-source-map</li> <li>最佳实践：</li> <li>开发环境：快（eval），信息全展示源码（module），且由于此时代码未压缩，不在意代码列信息（cheap），所以：devtool: 'eval-cheap-module-source-map';</li> <li>生产环境: 我们不希望任何人在浏览器直接看到源码，不应该提供 sourcemap 给浏览器。所以：devtool: 'hidden-source-map';  把sourcemap 文件单独上传到内网；
+-一方面webpack会生成sourcemap文件以提供给错误收集工具比如sentry,另一方面又不会为budle 添加🚰注释，以避免浏览器使用</li></ul></blockquote> <div class="language- extra-class"><pre class="language-text"><code>devtool: false,
+plugins: [
+   new webpack.SourceMapDevToolPlugin({
+​       filename: '[file].map',
+​       append: 'n//# sourceMappingURL=https://localhost:9000/[url]',
+   }),
+]
+</code></pre></div><h2 id="六、-mpa多页面配置"><a href="#六、-mpa多页面配置" class="header-anchor">#</a> 六、 MPA多页面配置</h2> <h4 id="_6-1-直接写简单配置"><a href="#_6-1-直接写简单配置" class="header-anchor">#</a> 6.1 直接写简单配置</h4> <div class="language- extra-class"><pre class="language-text"><code> entry: {
+​        page1: './src/page1.js',
+​        page2: './src/page2.js',
+​    },
+output: {
+​        path: path.resolve(__dirname, 'dist'),
+​        filename: '[name].js',
+​       
+},
+plugins: [
+​        new HtmlWebpackPlugin({
+​            template: './public/index.html',
+​            filename: 'page1.html',
+​            chunks: ['page1']
+​        }),
+​        new HtmlWebpackPlugin({
+​            template: './public/index.html',
+​            filename: 'page2.html',
+​            chunks: ['page2']
+​        })
+]
+</code></pre></div><h4 id="_6-2-野生-node-api"><a href="#_6-2-野生-node-api" class="header-anchor">#</a> 6.2 野生 node API</h4> <div class="language- extra-class"><pre class="language-text"><code>const pages = fs.readdirSync(path.resolve(__dirname, 'pages'))
+let entries = pages.reduce((result, cur) =&gt; {
+​    result[path.basename(cur, '.jsx')] = `./pages/${cur}`
+​    return result;
+},{})
+let plugins = [];
+pages.map(item =&gt; {
+​    console.log(999, item);
+​     plugins.push(
+​            new HtmlWebpackPlugin({
+​            template: 'public/index.html',
+​            filename: `${path.basename(item, '.jsx')}.html`,
+​            chunks: [`${path.basename(item, '.jsx')}`]
+​        })
+​    )
+})
+module.exports = (env) =&gt; {
+​    return {
+​        entry: entries,
+​        output: {
+​            filename: '[name].js',
+​            path: path.resolve(__dirname, 'dist'),
+​            clean: true,
+​           
+​        },
+​        plugins: [
+​            ...plugins,
+​            new webpack.DefinePlugin({
+​                &quot;process.env.NODE_ENV&quot;: JSON.stringify(process.env.NODE_ENV),
+​            })
+​        ]
+​    }
+}
+</code></pre></div><h4 id="_6-3-借助-glob-库"><a href="#_6-3-借助-glob-库" class="header-anchor">#</a> 6.3 借助 glob  库</h4> <div class="language- extra-class"><pre class="language-text"><code>const glob = require('glob');
+const setMPA = () =&gt; {
+​    const entries = {};
+​    const htmlWebpackPlugins = [];
+​    const entryFiles = glob.sync(path.join(__dirname, './src/pages/*.js'));
+​    console.log(123,entryFiles);
+​    
+​    entryFiles.forEach(item =&gt; {
+​        let match = item.match(/src/pages/(.*).js/);
+​        let key = match[1]
+​        entries[key] = './' + match[0];
+​        htmlWebpackPlugins.push(
+​            new HtmlWebpackPlugin({
+​                template: './public/index.html',
+​                filename: `${key}.html`,
+​                chunks: [key]
+​            })
+​        )
+​    })
+​    
+​    console.log(111, entries, htmlWebpackPlugins);
+​    return {
+​        entries, htmlWebpackPlugins
+​    }
+}
+const { entries, htmlWebpackPlugins } = setMPA();
+</code></pre></div><h2 id="七、引入第三方类库-lodash，jquery）"><a href="#七、引入第三方类库-lodash，jquery）" class="header-anchor">#</a> 七、引入第三方类库(lodash，jquery）</h2> <h4 id="_7-1-直接引入"><a href="#_7-1-直接引入" class="header-anchor">#</a> 7.1 直接引入</h4> <div class="language- extra-class"><pre class="language-text"><code>import _ from 'lodash'
+console.log(_.join(['a', 'b', 'c'], '-'))
+</code></pre></div><p>缺点：每次都要引用</p> <h4 id="_7-2-插件引入"><a href="#_7-2-插件引入" class="header-anchor">#</a> 7.2 插件引入</h4> <div class="language- extra-class"><pre class="language-text"><code>new webpack.ProvidePlugin({
+  $: 'jquery',
+  jQuery: 'jquery',
+});
+</code></pre></div><p>缺点：比较方便，不用手工引用，但不能在全局下使用, 只是注入到当前上下文；</p> <h4 id="_7-3-注入全局-expose-loader"><a href="#_7-3-注入全局-expose-loader" class="header-anchor">#</a> 7.3 注入全局 (expose-loader)</h4> <p>7.3.1 内联loader形式</p> <div class="language- extra-class"><pre class="language-text"><code>// 第一种
+import __ from 'expose-loader?exposes=__!lodash'
+console.log(_.join(['a', 'b', 'c'], '-'))
+
+// 第二种
+import lodash from 'expose-loader?exposes=lodash!lodash'
+console.log(lodash.join(['a', 'b', 'c'], '-'));
+</code></pre></div><p>7.3.2 配置形式</p> <div class="language- extra-class"><pre class="language-text"><code>// src/index.js
+import 'lodash'   // 注意这里一定要引入，import require 都可以
+console.log(lodash.join(['a', 'b', 'c'], '-'));
+
+// webpack.config.js 文件
+    module: {
+        rules: [ 
+            {
+                test: require.resolve(&quot;lodash&quot;),
+                loader: &quot;expose-loader&quot;,
+                options: {
+                    exposes: &quot;lodash&quot;
+                },
+            },
+       	]
+    }
+</code></pre></div><h4 id="_7-4-cdn-形式"><a href="#_7-4-cdn-形式" class="header-anchor">#</a> 7.4 CDN 形式</h4></div> <div class="page-edit"><div class="edit-link"><a href="https://github.com/sxyuzhenhua/yublog/edit/master/docs/zh/webpack.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></div> <!----></div> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/yublog/zh/设计模式.html" class="prev">
+          设计模式
+        </a></span> <span class="next"><a href="/yublog/zh/浏览器原理.html">
+          浏览器原理
+        </a>
+        →
+      </span></p></div> </div> <!----></div></div>
+    <script src="/yublog/assets/js/app.37e56814.js" defer></script><script src="/yublog/assets/js/14.4169265d.js" defer></script>
+  </body>
+</html>

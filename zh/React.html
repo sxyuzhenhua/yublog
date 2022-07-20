@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>生命周期 | 渲染器</title>
+    <meta name="description" content="也许是讲渲染器相关内容中最细最全的了吧">
+    
+    
+    <link rel="preload" href="/yublog/assets/css/0.styles.2be786d9.css" as="style"><link rel="preload" href="/yublog/assets/js/app.37e56814.js" as="script"><link rel="preload" href="/yublog/assets/js/3.a7947606.js" as="script"><link rel="prefetch" href="/yublog/assets/js/10.891e66a3.js"><link rel="prefetch" href="/yublog/assets/js/11.9ccbd59b.js"><link rel="prefetch" href="/yublog/assets/js/12.73e8c7ba.js"><link rel="prefetch" href="/yublog/assets/js/13.a48112d4.js"><link rel="prefetch" href="/yublog/assets/js/14.4169265d.js"><link rel="prefetch" href="/yublog/assets/js/15.3071b19d.js"><link rel="prefetch" href="/yublog/assets/js/16.f9d88530.js"><link rel="prefetch" href="/yublog/assets/js/17.c1ab2bac.js"><link rel="prefetch" href="/yublog/assets/js/18.bb240c5d.js"><link rel="prefetch" href="/yublog/assets/js/19.4491ed2b.js"><link rel="prefetch" href="/yublog/assets/js/2.530ddd4d.js"><link rel="prefetch" href="/yublog/assets/js/4.518986e4.js"><link rel="prefetch" href="/yublog/assets/js/5.62c60af0.js"><link rel="prefetch" href="/yublog/assets/js/6.88e275c6.js"><link rel="prefetch" href="/yublog/assets/js/7.112b3033.js"><link rel="prefetch" href="/yublog/assets/js/8.d1d6dc10.js"><link rel="prefetch" href="/yublog/assets/js/9.20ad09d8.js">
+    <link rel="stylesheet" href="/yublog/assets/css/0.styles.2be786d9.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/yublog/zh/" class="home-link router-link-active"><!----> <span class="site-name">渲染器</span></a> <div class="links" style="max-width:nullpx;"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Languages</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/yublog/" class="nav-link">English</a></li><li class="dropdown-item"><!----> <a href="/yublog/zh/React.html" aria-current="page" class="nav-link router-link-exact-active router-link-active">简体中文</a></li></ul></div></div> <a href="https://github.com/sxyuzhenhua/yublog" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar"><nav class="nav-links"><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Languages</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/yublog/" class="nav-link">English</a></li><li class="dropdown-item"><!----> <a href="/yublog/zh/React.html" aria-current="page" class="nav-link router-link-exact-active router-link-active">简体中文</a></li></ul></div></div> <a href="https://github.com/sxyuzhenhua/yublog" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><a href="/yublog/zh/Vue的CSS的Scoped原理.html" class="sidebar-link">Vue的CSS的Scoped原理</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/Vue的CSS的Scoped原理.html#vue的css的scoped原理" class="sidebar-link">Vue的CSS的Scoped原理</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/Vue的CSS的Scoped原理.html#缺点" class="sidebar-link">缺点</a></li></ul></li></ul></li><li><a href="/yublog/zh/设计模式.html" class="sidebar-link">设计模式</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/设计模式.html#typescript在线编辑" class="sidebar-link">typescript在线编辑</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/设计模式.html#面向对象" class="sidebar-link">面向对象</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/设计模式.html#继承" class="sidebar-link">继承</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/设计模式.html#封装" class="sidebar-link">封装</a></li></ul></li></ul></li><li><a href="/yublog/zh/webpack.html" class="sidebar-link">webpack</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/webpack.html#一、介绍" class="sidebar-link">一、介绍</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/webpack.html#二、环境差异" class="sidebar-link">二、环境差异</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/webpack.html#三、publicpath-区别" class="sidebar-link">三、publicPath 区别</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/webpack.html#四、babel-loader-babel-core-预设-的关系" class="sidebar-link">四、babel-loader &amp; @babel/core &amp; 预设 的关系</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/webpack.html#五、sourcemap" class="sidebar-link">五、SourceMap</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/webpack.html#六、-mpa多页面配置" class="sidebar-link">六、 MPA多页面配置</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/webpack.html#七、引入第三方类库-lodash，jquery）" class="sidebar-link">七、引入第三方类库(lodash，jquery）</a></li></ul></li><li><a href="/yublog/zh/浏览器原理.html" class="sidebar-link">浏览器原理</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#chrome架构" class="sidebar-link">Chrome架构</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#先区分进程和线程" class="sidebar-link">先区分进程和线程</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#进程与线程的关系" class="sidebar-link">进程与线程的关系</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#单进程浏览器时代" class="sidebar-link">单进程浏览器时代</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#多进程浏览器时代" class="sidebar-link">多进程浏览器时代</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#目前多进程架构" class="sidebar-link">目前多进程架构</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#http请求流程：为什么很多站点第二次打开速度会很快？" class="sidebar-link">HTTP请求流程：为什么很多站点第二次打开速度会很快？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#浏览器端发起-http-请求流程" class="sidebar-link">浏览器端发起 HTTP 请求流程</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#chrome开发者工具-性能分析" class="sidebar-link">Chrome开发者工具(性能分析)</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#网络面板" class="sidebar-link">网络面板</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#优化时间线上耗时项" class="sidebar-link">优化时间线上耗时项</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#渲染总体过程" class="sidebar-link">渲染总体过程</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#javascript-是如何影响-dom-树构建的" class="sidebar-link">Javascript 是如何影响 DOM 树构建的</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#dom-树" class="sidebar-link">DOM 树</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#dom-树生成" class="sidebar-link">DOM 树生成</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#javascript-是如何影响-dom-生成的" class="sidebar-link">JavaScript 是如何影响 DOM 生成的</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#css如何影响首次加载时的白屏时间？" class="sidebar-link">CSS如何影响首次加载时的白屏时间？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#最简单的" class="sidebar-link">最简单的</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#稍微复杂一点的" class="sidebar-link">稍微复杂一点的</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#再复杂一点的" class="sidebar-link">再复杂一点的</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#为什么css-动画比-javascript-高效" class="sidebar-link">为什么CSS 动画比 Javascript 高效</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#如何利用分层技术优化代码" class="sidebar-link">如何利用分层技术优化代码</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#如何系统的优化页面" class="sidebar-link">如何系统的优化页面</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#典型的加载阶段渲染流水线" class="sidebar-link">典型的加载阶段渲染流水线:</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#影响页面首次渲染的核心因素" class="sidebar-link">影响页面首次渲染的核心因素</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#如何减少关键资源的个数？" class="sidebar-link">如何减少关键资源的个数？</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#如何减少关键资源的大小？" class="sidebar-link">如何减少关键资源的大小？</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#如何减少关键资源-rtt-的次数？" class="sidebar-link">如何减少关键资源 RTT 的次数？</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#交互阶段优化" class="sidebar-link">交互阶段优化</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#虚拟dom和实际的dom有何不同？" class="sidebar-link">虚拟DOM和实际的DOM有何不同？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#dom-缺陷" class="sidebar-link">DOM 缺陷</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#什么是虚拟-dom" class="sidebar-link">什么是虚拟 DOM</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#双缓存" class="sidebar-link">双缓存</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#mvc-模式" class="sidebar-link">MVC 模式</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#渐进式网页应用（pwa）" class="sidebar-link">渐进式网页应用（PWA）</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#什么是-pwa？pwa-又是以什么方式切入到移动端的呢？" class="sidebar-link">什么是 PWA？PWA 又是以什么方式切入到移动端的呢？</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#web-应用-vs-本地应用" class="sidebar-link">Web 应用 VS 本地应用</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#什么是-service-worker" class="sidebar-link">什么是 Service Worker</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#service-worker-的设计思路" class="sidebar-link">Service Worker 的设计思路</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#webcomponent-搭积木构建web应用" class="sidebar-link">WebComponent(搭积木构建Web应用)</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#什么是组件化呢？" class="sidebar-link">什么是组件化呢？</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#阻碍前端组件化的因素" class="sidebar-link">阻碍前端组件化的因素</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#webcomponent-组件化开发" class="sidebar-link">WebComponent 组件化开发</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/浏览器原理.html#浏览器如何实现影子-dom" class="sidebar-link">浏览器如何实现影子 DOM</a></li></ul></li></ul></li><li><a href="/yublog/zh/抓包工具.html" class="sidebar-link">抓包工具</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/抓包工具.html#whistle" class="sidebar-link">whistle</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/抓包工具.html#wireshark" class="sidebar-link">Wireshark</a></li></ul></li><li><a href="/yublog/zh/面试.html" class="sidebar-link">面试</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#关于循环-await-异步面试题" class="sidebar-link">关于循环 + await 异步面试题</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#对两个版本号进行大小比较" class="sidebar-link">对两个版本号进行大小比较</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#实现多维对象的扁平化处理" class="sidebar-link">实现多维对象的扁平化处理</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#实现对“url问号传参”的解析" class="sidebar-link">实现对“URL问号传参”的解析</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#阿拉伯数字转为中文数字" class="sidebar-link">阿拉伯数字转为中文数字</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#将一维数组转换成树形结构" class="sidebar-link">将一维数组转换成树形结构</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#在多维数据结构中，按条件实现深层查找" class="sidebar-link">在多维数据结构中，按条件实现深层查找</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#基于js实现-均匀运动-的动画" class="sidebar-link">基于JS实现 &quot;均匀运动&quot; 的动画</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#关于规避请求失败，递归获取需要数据的问题" class="sidebar-link">关于规避请求失败，递归获取需要数据的问题</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#仿抖音发布视频时的-“-话题解析”-逻辑" class="sidebar-link">仿抖音发布视频时的 “#话题解析” 逻辑</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/面试.html#词法环境，变量环境，outer-作用域链-和-this" class="sidebar-link">(词法环境，变量环境，outer)[作用域链]   和 this</a></li></ul></li><li><a href="/yublog/zh/React.html" aria-current="page" class="active sidebar-link">React</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#生命周期" class="sidebar-link">生命周期</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#使用第三方库-d3" class="sidebar-link">使用第三方库, d3</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#hooks" class="sidebar-link">Hooks</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#usestate：让函数组件具有维持状态的能力" class="sidebar-link">useState：让函数组件具有维持状态的能力</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#useeffect：执行副作用" class="sidebar-link">useEffect：执行副作用</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#useeffect-还有两个特殊的用法：-没有依赖项，以及依赖项作为空数组。" class="sidebar-link">useEffect 还有两个特殊的用法： 没有依赖项，以及依赖项作为空数组。</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#理解-hooks-的依赖" class="sidebar-link">理解 Hooks 的依赖</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#掌握-hooks-的使用规则" class="sidebar-link">掌握 Hooks 的使用规则</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#为什么要避免重复定义回调函数？" class="sidebar-link">为什么要避免重复定义回调函数？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#usecallback：缓存回调函数" class="sidebar-link">useCallback：缓存回调函数</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#usememo：缓存计算的结果" class="sidebar-link">useMemo：缓存计算的结果</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#useref：在多次渲染之间共享数据" class="sidebar-link">useRef：在多次渲染之间共享数据</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#usecontext：定义全局状态" class="sidebar-link">useContext：定义全局状态</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#如何正确理解函数组件的生命周期？" class="sidebar-link">如何正确理解函数组件的生命周期？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#重新思考组件的生命周期" class="sidebar-link">重新思考组件的生命周期</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#自定义hooks-：四个典型的使用场景" class="sidebar-link">自定义Hooks ：四个典型的使用场景</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#如何创建自定义-hooks？" class="sidebar-link">如何创建自定义 Hooks？</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#封装通用逻辑：useasync" class="sidebar-link">封装通用逻辑：useAsync</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#监听浏览器状态：usescroll" class="sidebar-link">监听浏览器状态：useScroll</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#拆分复杂组件" class="sidebar-link">拆分复杂组件</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#全局状态管理：如何在函数组件中使用-redux？" class="sidebar-link">全局状态管理：如何在函数组件中使用 Redux？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#理解-redux-的三个基本概念" class="sidebar-link">理解 Redux 的三个基本概念</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#如何在-react-中使用-redux" class="sidebar-link">如何在 React 中使用 Redux</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#使用-redux-处理异步逻辑" class="sidebar-link">使用 Redux 处理异步逻辑</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#复杂状态处理：如何保证状态一致性？" class="sidebar-link">复杂状态处理：如何保证状态一致性？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#实战演练：创建自定义受控组件" class="sidebar-link">实战演练：创建自定义受控组件</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#异步处理：如何向服务器端发送请求？" class="sidebar-link">异步处理：如何向服务器端发送请求？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#实现自己的-api-client" class="sidebar-link">实现自己的 API Client</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#多个-api-调用：如何处理并发或串行请求？" class="sidebar-link">多个 API 调用：如何处理并发或串行请求？</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#函数组件设计模式：如何应对复杂条件渲染场景？" class="sidebar-link">函数组件设计模式：如何应对复杂条件渲染场景？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#容器模式：实现按条件执行-hooks" class="sidebar-link">容器模式：实现按条件执行 Hooks</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#使用-render-props-模式重用-ui-逻辑" class="sidebar-link">使用 render props 模式重用 UI 逻辑</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#事件处理：如何创建自定义事件？" class="sidebar-link">事件处理：如何创建自定义事件？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#react-原生事件的原理：合成事件（synthetic-events）" class="sidebar-link">React 原生事件的原理：合成事件（Synthetic Events）</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#创建自定义事件" class="sidebar-link">创建自定义事件</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#使用-hooks-封装键盘事件开" class="sidebar-link">使用 Hooks 封装键盘事件开</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#form：hooks-给-form-处理带来了哪些新变化？" class="sidebar-link">Form：Hooks 给 Form 处理带来了哪些新变化？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#在表单中使用-react-组件：受控组件和非受控组件" class="sidebar-link">在表单中使用 React 组件：受控组件和非受控组件</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/React.html#使用-hooks-简化表单处理" class="sidebar-link">使用 Hooks 简化表单处理</a></li></ul></li></ul></li><li><a href="/yublog/zh/Redux.html" class="sidebar-link">Redux</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/Redux.html#一、不可变数据" class="sidebar-link">一、不可变数据</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/Redux.html#二、为啥需要不可变数据" class="sidebar-link">二、为啥需要不可变数据</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/Redux.html#三、如何操作不可变数据" class="sidebar-link">三、如何操作不可变数据</a></li></ul></li><li><a href="/yublog/zh/react-router.html" class="sidebar-link">react-router</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/react-router.html#react-router-api" class="sidebar-link">React Router API</a></li></ul></li><li><a href="/yublog/zh/npm发布.html" class="sidebar-link">npm发布</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#package-json-版本区别（～-lastest）" class="sidebar-link">package.json  版本区别（～ ^ lastest）</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#查看" class="sidebar-link">查看</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#查看具体的dist-tag-包括prerelease与稳定版本" class="sidebar-link">查看具体的dist-tag (包括prerelease与稳定版本)</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#发布一个带tag的版本" class="sidebar-link">发布一个带tag的版本</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#切换版本" class="sidebar-link">切换版本</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#用户默认安装的版本就是latest" class="sidebar-link">用户默认安装的版本就是latest</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#如何安装tag版本" class="sidebar-link">如何安装tag版本</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#总结" class="sidebar-link">总结</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/npm发布.html#发布测试包，不影响线上安装latest" class="sidebar-link">发布测试包，不影响线上安装latest</a></li></ul></li></ul></li><li><a href="/yublog/zh/杂.html" class="sidebar-link">杂</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/杂.html#主要记录平时工作中遇到的一些点" class="sidebar-link">主要记录平时工作中遇到的一些点</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/杂.html#window-addeventlistener-pushstate-handler-不管用" class="sidebar-link">window.addEventListener('pushstate', handler) 不管用</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/杂.html#低代码：" class="sidebar-link">低代码：</a></li></ul></li></ul></li><li><a href="/yublog/zh/如何在项目中落地TS.html" class="sidebar-link">如何在项目中落地TS</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/yublog/zh/Vue3.html" class="sidebar-link">Vue3</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/Vue3.html#vue3-0-性能提升" class="sidebar-link">VUE3.0 性能提升</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/Vue3.html#编译阶段" class="sidebar-link">编译阶段</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/Vue3.html#源码体积" class="sidebar-link">源码体积</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/Vue3.html#响应式系统" class="sidebar-link">响应式系统</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/Vue3.html#为什么用proxy-替代-defineproperty" class="sidebar-link">为什么用proxy  替代 defineProperty</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/yublog/zh/Vue3.html#defineproperty" class="sidebar-link">DefineProperty</a></li><li class="sidebar-sub-header"><a href="/yublog/zh/Vue3.html#proxy" class="sidebar-link">Proxy</a></li></ul></li><li class="sidebar-sub-header"><a href="/yublog/zh/Vue3.html#composition-api-与-optional-api" class="sidebar-link">Composition API 与 optional API</a></li></ul></li></ul> </div> <div class="page"> <div class="content"><p><a href="https://codesandbox.io/s/react-hooks-course-20vzg?file=/src/08/PriceInput.js:0-802" title="超链接title" target="_blank" rel="noopener noreferrer">在线写代码<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <h2 id="生命周期"><a href="#生命周期" class="header-anchor">#</a> 生命周期</h2> <p>https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/
+<img src="/yublog/assets/img/react-line.fc7b0253.png" alt="react-line"></p> <h4 id="_1-constructor"><a href="#_1-constructor" class="header-anchor">#</a> 1. constructor</h4> <ul><li>用于初始化内部状态，很少使用</li></ul> <ul><li>唯一可以直接修改state的地方</li></ul> <h4 id="_2-get­derived­state­from­props"><a href="#_2-get­derived­state­from­props" class="header-anchor">#</a> 2. get­Derived­State­From­Props</h4> <ul><li>当state 需要从props 初始化时使用</li> <li>尽量不要使用，维护两者状态一直行会增加复杂度</li> <li>每次render 都会调用</li> <li>典型场景：表单控件获取默认值</li></ul> <h4 id="_3-component­did­mount"><a href="#_3-component­did­mount" class="header-anchor">#</a> 3. component­Did­Mount</h4> <ul><li>UI 渲染完成后调用</li></ul> <ul><li>只执行一次</li> <li>典型场景：获取外部资源</li></ul> <h4 id="_4-component­will­unmount"><a href="#_4-component­will­unmount" class="header-anchor">#</a> 4. component­Will­Unmount</h4> <ul><li>组件被移除始调用</li> <li>典型场景：资源释放</li></ul> <h4 id="_5-get­snapshot­before­update"><a href="#_5-get­snapshot­before­update" class="header-anchor">#</a> 5. get­Snapshot­Before­Update</h4> <ul><li>在页面render 之前调用，state 已更新</li> <li>典型场景： 获取 render 之前的 DOM 状态</li></ul> <h4 id="_6-component­did­update"><a href="#_6-component­did­update" class="header-anchor">#</a> 6. component­Did­Update</h4> <ul><li>每次UI更新时被调用</li> <li>典型场景： 页面需要根据 props 变化重新获取数据</li></ul> <h4 id="_7-should­component­update"><a href="#_7-should­component­update" class="header-anchor">#</a> 7. should­Component­Update</h4> <ul><li>决定 Virtual DOM 是否要重绘</li> <li>一般可以由 PureComponent 自动实现</li> <li>典型场景：性能优化</li></ul> <h2 id="使用第三方库-d3"><a href="#使用第三方库-d3" class="header-anchor">#</a> 使用第三方库, d3</h2> <div class="language- extra-class"><pre class="language-text"><code>componentDidUpdate(prevProps, prevState) {
+    if(this.state.data !== prevState.data) this.updateDiagarame()
+}
+
+&lt;div ref={node =&gt; {this.d3Node = node}}&gt;&lt;/div&gt;
+</code></pre></div><h2 id="hooks"><a href="#hooks" class="header-anchor">#</a> Hooks</h2> <div class="language- extra-class"><pre class="language-text"><code>const getSize = () =&gt; {
+  return window.innerWidth &gt; 1000 ? &quot;large&quot; : &quot;small&quot;;
+}
+const useWindowSize = () =&gt; {
+  const [size, setSize] = useState(getSize());
+  useEffect(() =&gt; {
+	const handler = () =&gt; {
+      setSize(getSize())
+    };
+    window.addEventListener('resize', handler);
+    return () =&gt; {
+      window.removeEventListener('resize', handler);
+    };
+  }, []);
+	
+  return size;
+};
+</code></pre></div><p>这样，我们在组件中使用窗口大小就会非常简单：</p> <div class="language- extra-class"><pre class="language-text"><code>const Demo = () =&gt; {
+  const size = useWindowSize();
+  if (size === &quot;small&quot;) return ;
+  else return ;
+};
+
+</code></pre></div><h4 id="hooks-2"><a href="#hooks-2" class="header-anchor">#</a> Hooks</h4> <p>useState、useEffect、useCallback、useMemo、useRef、useContext</p> <h2 id="usestate：让函数组件具有维持状态的能力"><a href="#usestate：让函数组件具有维持状态的能力" class="header-anchor">#</a> useState：让函数组件具有维持状态的能力</h2> <p>state 是 React 组件的一个核心机制，那么 useState 这个 Hook 就是用来管理 state 的，它可以让函数组件具有维持状态的能力。也就是说，在一个函数组件的多次渲染之间，这个 state 是共享的。下面这个例子就显示了 useState 的用法：</p> <div class="language- extra-class"><pre class="language-text"><code>import React, { useState } from 'react';
+
+function Example() {
+  // 创建一个保存 count 的 state，并给初始值 0
+  const [count, setCount] = useState(0);
+
+  return (
+    {count}
+        setCount(count + 1)}&gt;
+            +
+    );
+    }
+</code></pre></div><h4 id="在这个例子中，我们声明了一个名为-count-的-state，并得到了设置这个-count-值的函数-setcount。当调用-setcount-时，count-这个-state-就会被更新，并触发组件的刷新。那么-usestate-这个-hook-的用法总结出来就是这样的："><a href="#在这个例子中，我们声明了一个名为-count-的-state，并得到了设置这个-count-值的函数-setcount。当调用-setcount-时，count-这个-state-就会被更新，并触发组件的刷新。那么-usestate-这个-hook-的用法总结出来就是这样的：" class="header-anchor">#</a> 在这个例子中，我们声明了一个名为 count 的 state，并得到了设置这个 count 值的函数 setCount。当调用 setCount 时，count 这个 state 就会被更新，并触发组件的刷新。那么 useState 这个 Hook 的用法总结出来就是这样的：</h4> <ol><li>useState(initialState) 的参数 initialState 是创建 state 的初始值，它可以是任意类型，比如数字、对象、数组等等。</li> <li>useState() 的返回值是一个有着两个元素的数组。第一个数组元素用来读取 state 的值，第二个则是用来设置这个 state 的值。在这里要注意的是，state 的变量（例子中的 count）是只读的，所以我们必须通过第二个数组元素 setCount 来设置它的值。</li> <li>如果要创建多个 state，那么我们就需要多次调用 useState。比如要创建多个 state，使用的代码如下：</li></ol> <div class="language- extra-class"><pre class="language-text"><code>// 定义一个年龄的 state，初始值是 42
+const [age, setAge] = useState(42);
+// 定义一个水果的 state，初始值是 banana
+const [fruit, setFruit] = useState('banana');
+// 定一个一个数组 state，初始值是包含一个 todo 的数组
+const [todos, setTodos] = useState([{ text: 'Learn Hooks' }]);
+
+</code></pre></div><h4 id="state-中永远不要保存可以通过计算得到的值"><a href="#state-中永远不要保存可以通过计算得到的值" class="header-anchor">#</a> state 中永远不要保存可以通过计算得到的值</h4> <ol><li>从 props 传递过来的值。有时候 props 传递过来的值无法直接使用，而是要通过一定的计算后再在 UI 上展示，比如说排序。那么我们要做的就是每次用的时候，都重新排序一下，或者利用某些 cache 机制，而不是将结果直接放到 state 里。</li> <li>从 URL 中读到的值。比如有时需要读取 URL 中的参数，把它作为组件的一部分状态。那么我们可以在每次需要用的时候从 URL 中读取，而不是读出来直接放到 state 里。</li> <li>从 cookie、localStorage 中读取的值。通常来说，也是每次要用的时候直接去读取，而不是读出来后放到 state 里。</li></ol> <h4 id="一旦组件有自己状态，意味着组件如果重新创建，就需要有恢复状态的过程，这通常会让组件变得更复杂。"><a href="#一旦组件有自己状态，意味着组件如果重新创建，就需要有恢复状态的过程，这通常会让组件变得更复杂。" class="header-anchor">#</a> 一旦组件有自己状态，意味着组件如果重新创建，就需要有恢复状态的过程，这通常会让组件变得更复杂。</h4> <p>比如一个组件想在服务器端请求获取一个用户列表并显示，如果把读取到的数据放到本地的 state 里，那么每个用到这个组件的地方，就都需要重新获取一遍。</p> <p>而如果通过一些状态管理框架，去管理所有组件的 state 的话，比如我在第7讲会介绍的 Redux，那么<strong>组件本身就可以是无状态的</strong>。无状态组件可以成为更纯粹的表现层，没有太多的业务逻辑，从而更易于使用、测试和维护。</p> <h2 id="useeffect：执行副作用"><a href="#useeffect：执行副作用" class="header-anchor">#</a> useEffect：执行副作用</h2> <p><strong>副作用是指一段和当前执行结果无关的代码</strong>。比如说要修改函数外部的某个变量，要发起一个请求，等等。也就是说，在函数组件的当次执行过程中，useEffect 中代码的执行是不影响渲染出来的 UI 的。</p> <div class="language- extra-class"><pre class="language-text"><code>useEffect(callback, dependencies)
+</code></pre></div><p>第一个为要执行的函数callback，<strong>第二个是可选的依赖项数组dependencies</strong>。其中依赖项是可选的，如果不指定，那么 callback 就会在每次函数组件执行完后都执行；如果指定了，那么只有依赖项中的值发生变化的时候，它才会执行。</p> <p>对应到 Class 组件，那么 useEffect 就涵盖了 ComponentDidMount、componentDidUpdate和componentWillUnmount 三个生命周期方法。不过如果你习惯了使用Class 组件，那千万不要按照把 useEffect 对应到某个或者某几个生命周期的方法。你只要记住，<strong>useEffect 是每次组件 render 完后判断依赖并执行就可以了</strong>。</p> <p>举个例子，某个组件用于显示一篇 Blog 文章，那么这个组件会接收一个参数来表示 Blog 的 ID。而当 ID 发生变化时，组件需要发起请求来获取文章内容并展示：</p> <div class="language- extra-class"><pre class="language-text"><code>import React, { useState, useEffect } from &quot;react&quot;;
+
+function BlogView({ id }) {
+  // 设置一个本地 state 用于保存 blog 内容
+  const [blogContent, setBlogContent] = useState(null);
+
+  useEffect(() =&gt; {
+    // useEffect 的 callback 要避免直接的 async 函数，需要封装一下
+    const doAsync = async () =&gt; {
+      // 当 id 发生变化时，将当前内容清楚以保持一致性
+      setBlogContent(null);
+      // 发起请求获取数据
+      const res = await fetch(`/blog-content/${id}`);
+      // 将获取的数据放入 state
+      setBlogContent(await res.text());
+    };
+    doAsync();
+  }, [id]); // 使用 id 作为依赖项，变化时则执行副作用
+
+  // 如果没有 blogContent 则认为是在 loading 状态
+  const isLoading = !blogContent;
+  return 
+    {isLoading ? &quot;Loading...&quot; : blogContent}
+    ;
+    }
+
+</code></pre></div><h3 id="useeffect-还有两个特殊的用法：-没有依赖项，以及依赖项作为空数组。"><a href="#useeffect-还有两个特殊的用法：-没有依赖项，以及依赖项作为空数组。" class="header-anchor">#</a> useEffect 还有两个特殊的用法： 没有依赖项，以及依赖项作为空数组。</h3> <ol><li>没有依赖项，则每次 render 后都会重新执行。例如：</li></ol> <div class="language- extra-class"><pre class="language-text"><code>useEffect(() =&gt; {
+  // 每次 render 完一定执行
+  console.log('re-rendered');
+});
+</code></pre></div><ol start="2"><li>空数组作为依赖项，则只在首次执行时触发，对应到 Class 组件就是 componentDidMount。例如：</li></ol> <div class="language- extra-class"><pre class="language-text"><code>useEffect(() =&gt; {
+  // 组件首次渲染时执行，等价于 class 组件中的 componentDidMount
+  console.log('did mount');
+}, [])
+</code></pre></div><p>除了这些机制之外，useEffect 还允许你返回一个函数，用于在组件销毁的时候做一些清理的操作。比如移除事件的监听。这个机制就几乎等价于类组件中的 componentWillUnmount。举个例子，在组件中，我们需要监听窗口的大小变化，以便做一些布局上的调整：</p> <div class="language- extra-class"><pre class="language-text"><code>// 设置一个 size 的 state 用于保存当前窗口尺寸
+const [size, setSize] = useState({});
+useEffect(() =&gt; {
+  // 窗口大小变化事件处理函数
+  const handler = () =&gt; {
+    setSize(getSize());
+  };
+  // 监听 resize 事件
+  window.addEventListener('resize', handler);
+  
+  // 返回一个 callback 在组件销毁时调用
+  return () =&gt; {
+    // 移除 resize 事件
+    window.removeEventListener('resize', handler);
+  };
+}, []);
+
+</code></pre></div><p><strong>总结</strong></p> <ol><li>每次 render 后执行：不提供第二个依赖项参数。比如
+useEffect(() =&gt; {})。</li> <li>仅第一次render 后执行：提供一个空数组作为依赖项。比如
+useEffect(() =&gt; {}, [])。</li> <li>第一次以及依赖项发生变化后执行：提供依赖项数组。比如
+useEffect(() =&gt; {}, [deps])。</li> <li>组件 unmount 后执行：返回一个回调函数。比如
+useEffect() =&gt; { return () =&gt; {} }, [])。</li></ol> <h2 id="理解-hooks-的依赖"><a href="#理解-hooks-的依赖" class="header-anchor">#</a> 理解 Hooks 的依赖</h2> <ol><li>依赖项中定义的变量一定是会在回调函数中用到的，否则声明依赖项其实是没有意义的。</li> <li>依赖项一般是一个常量数组，而不是一个变量。因为一般在创建 callback 的时候，你其实非常清楚其中要用到哪些依赖项了。</li> <li>React 会使用浅比较来对比依赖项是否发生了变化，所以要特别注意数组或者对象类型。如果你是每次创建一个新对象，即使和之前的值是等价的，也会被认为是依赖项发生了变化。这是一个刚开始使用 Hooks时很容易导致 Bug 的地方。例如下面的代码：</li></ol> <div class="language- extra-class"><pre class="language-text"><code>function Sample() {
+  // 这里在每次组件执行时创建了一个新数组
+  const todos = [{ text: 'Learn hooks.'}];
+  useEffect(() =&gt; {
+    console.log('Todos changed.');
+  }, [todos]);
+}
+
+</code></pre></div><p>代码的原意可能是在 todos 变化的时候去产生一些副作用，但是这里的 todos 变量是在函数内创建的，实际上每次都产生了一个新数组。所以在作为依赖项的时候进行引用的比较，实际上被认为是发生了变化的。</p> <h2 id="掌握-hooks-的使用规则"><a href="#掌握-hooks-的使用规则" class="header-anchor">#</a> 掌握 Hooks 的使用规则</h2> <p><strong>只能在函数组件的顶级作用域使用；只能在函数组件或者其他Hooks中使用。</strong></p> <h4 id="hooks-只能在函数组件的顶级作用域使用"><a href="#hooks-只能在函数组件的顶级作用域使用" class="header-anchor">#</a> Hooks 只能在函数组件的顶级作用域使用</h4> <p>所谓<strong>顶层作用域</strong>，就是 <strong>Hooks 不能在循环、条件判断或者嵌套函数内执行，而必须是在顶层</strong>。同时 <strong>Hooks 在组件的多次渲染之间，必须按顺序被执行</strong>。因为在 React 组件内部，其实是维护了一个对应组件的固定 Hooks 执行列表的，以便在多次渲染之间保持 Hooks 的状态，并做对比。</p> <p>而下面的代码是错误的，因为在某些条件下 Hooks 是不会被执行到的：</p> <div class="language- extra-class"><pre class="language-text"><code>function MyComp() {
+  const [count, setCount] = useState(0);
+  if (count &gt; 10) {
+    // 错误：不能将 Hook 用在条件判断里
+    useEffect(() =&gt; {
+      // ...
+    }, [count])
+  }
+  
+  // 这里可能提前返回组件渲染结果，后面就不能再用 Hooks 了
+  if (count === 0) {
+    return 'No content';
+  }
+
+  // 错误：不能将 Hook 放在可能的 return 之后
+  const [loading, setLoading] = useState(false);
+  
+  //...
+  return 
+{count}
+
+}
+
+</code></pre></div><p><strong>总结为两点：第一，所有 Hook 必须要被执行到。第二，必须按顺序执行。</strong></p> <h4 id="hooks-只能在函数组件或者其它-hooks-中使用"><a href="#hooks-只能在函数组件或者其它-hooks-中使用" class="header-anchor">#</a> Hooks 只能在函数组件或者其它 Hooks 中使用</h4> <p>一种是在函数组件内，另外一种则是在自定义的 Hooks 里面。</p> <p>这个规则在函数组件和类组件同时存在的项目中，可能会造成一定的困扰，因为 Hooks 简洁、直观，我们可能都倾向于用 Hooks 来实现逻辑的重用，但是如果一定要在 Class 组件中使用，那应该如何做呢？其实有一个通用的机制，那就是利用高阶组件的模式，将 Hooks 封装成高阶组件，从而让类组件使用。</p> <p>举个例子。我们已经定义了监听窗口大小变化的一个 Hook：useWindowSize。那么很容易就可以将其转换为高阶组件：</p> <div class="language- extra-class"><pre class="language-text"><code>import React from 'react';
+import { useWindowSize } from '../hooks/useWindowSize';
+
+export const withWindowSize = (Comp) =&gt; {
+  return props =&gt; {
+    const windowSize = useWindowSize();
+    return ;
+  };
+};
+</code></pre></div><p>那么我们就可以通过如下代码来使用这个高阶组件：</p> <div class="language- extra-class"><pre class="language-text"><code>import React from 'react';
+import { withWindowSize } from './withWindowSize';
+
+class MyComp {
+  render() {
+    const { windowSize } = this.props;
+    // ...
+  }
+}
+
+// 通过 withWindowSize 高阶组件给 MyComp 添加 windowSize 属性
+export default withWindowSize(MyComp);
+
+</code></pre></div><p>这样，通过 withWindowSize 这样一个高阶组件模式，你就可以把 useWindowSize 的结果作为属性，传递给需要使用窗口大小的类组件，这样就可以实现在 Class 组件中复用 Hooks 的逻辑了。</p> <p><strong>专门用来检查 Hooks 是否正确被使用，它就是 eslint-plugin-react-hooks 。</strong></p> <h2 id="为什么要避免重复定义回调函数？"><a href="#为什么要避免重复定义回调函数？" class="header-anchor">#</a> 为什么要避免重复定义回调函数？</h2> <h3 id="usecallback：缓存回调函数"><a href="#usecallback：缓存回调函数" class="header-anchor">#</a> useCallback：缓存回调函数</h3> <p>在 React 函数组件中，每一次 UI 的变化，都是通过重新执行整个函数来完成的，这和传统的 Class 组件有很大区别：函数组件中并没有一个直接的方式在多次渲染之间维持一个状态。</p> <p>比如下面的代码中，我们在加号按钮上定义了一个事件处理函数，用来让计数器加1。但是因为定义是在函数组件内部，因此在多次渲染之间，是无法重用 handleIncrement 这个函数的，而是每次都需要创建一个新的：</p> <div class="language- extra-class"><pre class="language-text"><code>function Counter() {
+  const [count, setCount] = useState(0);
+  const handleIncrement = () =&gt; setCount(count + 1);
+  // ...
+  return +
+}
+</code></pre></div><p>你不妨思考下这个过程。每次组件状态发生变化的时候，函数组件实际上都会重新执行一遍。在每次执行的时候，实际上都会创建一个新的事件处理函数 handleIncrement。这个事件处理函数中呢，包含了 count 这个变量的闭包，以确保每次能够得到正确的结果。</p> <p>这也意味着，即使 count 没有发生变化，但是函数组件因为其它状态发生变化而重新渲染时，这种写法也会每次创建一个新的函数。创建一个新的事件处理函数，虽然不影响结果的正确性，但其实是没必要的。因为这样做不仅增加了系统的开销，更重要的是：<strong>每次创建新函数的方式会让接收事件处理函数的组件，需要重新渲染</strong>。</p> <p>比如这个例子中的 button 组件，接收了 handleIncrement ，并作为一个属性。如果每次都是一个新的，那么这个 React 就会认为这个组件的 props 发生了变化，从而必须重新渲染。因此，我们需要做到的是：<strong>只有当 count 发生变化时，我们才需要重新定一个回调函数</strong>。而这正是 useCallback 这个 Hook 的作用。</p> <p>它的 API 签名如下：</p> <div class="language- extra-class"><pre class="language-text"><code>useCallback(fn, deps)
+</code></pre></div><p>这里fn是定义的回调函数，deps是依赖的变量数组。只有当某个依赖变量发生变化时，才会重新声明 fn这个回调函数。那么对于上面的例子，我们可以把 handleIncrement这个事件处理函数通过 useCallback 来进行性能的优化：</p> <div class="language- extra-class"><pre class="language-text"><code>import React, { useState, useCallback } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  const handleIncrement = useCallback(
+    () =&gt; setCount(count + 1),
+    [count], // 只有当 count 发生变化时，才会重新创建回调函数
+  );
+  // ...
+  return +
+}
+</code></pre></div><p>在这里，我们把 count 这个 state ，作为一个依赖传递给 useCallback。这样，只有 count 发生变化的时候，才需要重新创建一个回调函数，这样就保证了组件不会创建重复的回调函数。而接收这个回调函数作为属性的组件，也不会频繁地需要重新渲染。</p> <h3 id="usememo：缓存计算的结果"><a href="#usememo：缓存计算的结果" class="header-anchor">#</a> useMemo：缓存计算的结果</h3> <p>useMemo 的 API 签名如下：</p> <div class="language- extra-class"><pre class="language-text"><code>useMemo(fn, deps);
+
+</code></pre></div><p>这里的fn是产生所需数据的一个计算函数。通常来说，fn会使用 deps 中声明的一些变量来生成一个结果，用来渲染出最终的 UI。</p> <p>这个场景应该很容易理解：<strong>如果某个数据是通过其它数据计算得到的，那么只有当用到的数据，也就是依赖的数据发生变化的时候，才应该需要重新计算</strong>。</p> <p>举个例子，对于一个显示用户信息的列表，现在需要对用户名进行搜索，且 UI 上需要根据搜索关键字显示过滤后的用户，那么这样一个功能需要有两个状态：</p> <ol><li>用户列表数据本身：来自某个请求。</li> <li>搜索关键字：用户在搜索框输入的数据。</li></ol> <p>无论是两个数据中的哪一个发生变化，都需要过滤用户列表以获得需要展示的数据。那么如果不使用 useMemo 的话，就需要用这样的代码实现：</p> <div class="language- extra-class"><pre class="language-text"><code>import React, { useState, useEffect } from &quot;react&quot;;
+
+export default function SearchUserList() {
+  const [users, setUsers] = useState(null);
+  const [searchKey, setSearchKey] = useState(&quot;&quot;);
+
+  useEffect(() =&gt; {
+    const doFetch = async () =&gt; {
+      // 组件首次加载时发请求获取用户数据
+      const res = await fetch(&quot;https://reqres.in/api/users/&quot;);
+      setUsers(await res.json());
+    };
+    doFetch();
+  }, []);
+  let usersToShow = null;
+
+  if (users) {
+    // 无论组件为何刷新，这里一定会对数组做一次过滤的操作
+    usersToShow = users.data.filter((user) =&gt;
+      user.first_name.includes(searchKey),
+    );
+  }
+
+  return (
+    
+
+      
+{searchKey}
+ setSearchKey(evt.target.value)}
+      /&gt;
+      
+
+        {usersToShow &amp;&amp;
+          usersToShow.length &gt; 0 &amp;&amp;
+          usersToShow.map((user) =&gt; {
+            return 
+{user.first_name}
+;
+          })}
+      
+
+    
+
+  );
+}
+</code></pre></div><p>在这个例子中，无论组件为何要进行一次重新渲染，实际上都需要进行一次过滤的操作。但其实你只需要在 users 或者 searchKey 这两个状态中的某一个发生变化时，重新计算获得需要展示的数据就行了。那么，这个时候，我们就可以用 useMemo 这个 Hook 来实现这个逻辑，缓存计算的结果：</p> <div class="language- extra-class"><pre class="language-text"><code>//...
+// 使用 userMemo 缓存计算的结果
+const usersToShow = useMemo(() =&gt; {
+    if (!users) return null;
+    return users.data.filter((user) =&gt; {
+      return user.first_name.includes(searchKey));
+    }
+  }, [users, searchKey]);
+//...
+</code></pre></div><p>可以看到，通过 useMemo 这个 Hook，可以避免在用到的数据没发生变化时进行的重复计算。虽然例子展示的是一个很简单的场景，但如果是一个复杂的计算，那么对于提升性能会有很大的帮助。这也是userMemo的一大好处：避免重复计算。</p> <p>除了避免重复计算之外，<strong>useMemo 还有一个很重要的好处：避免子组件的重复渲染</strong>。比如在例子中的 usersToShow 这个变量，如果每次都需要重新计算来得到，那么对于 UserList 这个组件而言，就会每次都需要刷新，因为它将 usersToShow 作为了一个属性。而一旦能够缓存上次的结果，就和 useCallback 的场景一样，可以避免很多不必要的组件刷新。</p> <p>这个时候，如果我们结合 useMemo 和 useCallback 这两个 Hooks 一起看，<strong>会发现一个有趣的特性，那就是 useCallback 的功能其实是可以用 useMemo 来实现的</strong>。比如下面的代码就是利用 useMemo 实现了 useCallback 的功能：</p> <div class="language- extra-class"><pre class="language-text"><code> const myEventHandler = useMemo(() =&gt; {
+   // 返回一个函数作为缓存结果
+   return () =&gt; {
+     // 在这里进行事件处理
+   }
+ }, [dep1, dep2]);
+</code></pre></div><p>理解了这一点，相信你一下子会对这两个 Hooks 的机制有更进一步的认识，也就不用死记硬背两个 API 都是干嘛的了，因为从本质上来说，它们只是做了同一件事情：<strong>建立了一个绑定某个结果到依赖数据的关系。只有当依赖变了，这个结果才需要被重新得到</strong>。</p> <h3 id="useref：在多次渲染之间共享数据"><a href="#useref：在多次渲染之间共享数据" class="header-anchor">#</a> useRef：在多次渲染之间共享数据</h3> <p>函数组件虽然非常直观，简化了思考 UI 实现的逻辑，但是比起 Class 组件，<strong>还缺少了一个很重要的能力：在多次渲染之间共享数据</strong>。</p> <p>在类组件中，我们可以定义类的成员变量，以便能在对象上通过成员属性去保存一些数据。但是在函数组件中，是没有这样一个空间去保存数据的。因此，React 让useRef 这样一个 Hook 来提供这样的功能。</p> <p>useRef 的API签名如下：</p> <div class="language- extra-class"><pre class="language-text"><code>const myRefContainer = useRef(initialValue);
+</code></pre></div><p>我们可以把useRef看作是在函数组件之外创建的一个容器空间。在这个容器上，我们可以通过唯一的 current 属设置一个值，从而在函数组件的多次渲染之间共享这个值。</p> <p>假设你要去做一个计时器组件，这个组件有开始和暂停两个功能。很显然，你需要用 window.setInterval 来提供计时功能；而为了能够暂停，你就需要在某个地方保存这个 window.setInterval 返回的计数器的引用，确保在点击暂停按钮的同时，也能用 window.clearInterval 停止计时器。那么，这个保存计数器引用的最合适的地方，就是 useRef，因为它可以存储跨渲染的数据。代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>
+import React, { useState, useCallback, useRef } from &quot;react&quot;;
+
+export default function Timer() {
+  // 定义 time state 用于保存计时的累积时间
+  const [time, setTime] = useState(0);
+
+  // 定义 timer 这样一个容器用于在跨组件渲染之间保存一个变量
+  const timer = useRef(null);
+
+  // 开始计时的事件处理函数
+  const handleStart = useCallback(() =&gt; {
+    // 使用 current 属性设置 ref 的值
+    timer.current = window.setInterval(() =&gt; {
+      setTime((time) =&gt; time + 1);
+    }, 100);
+  }, []);
+
+  // 暂停计时的事件处理函数
+  const handlePause = useCallback(() =&gt; {
+    // 使用 clearInterval 来停止计时
+    window.clearInterval(timer.current);
+    timer.current = null;
+  }, []);
+
+  return (
+    
+
+      {time / 10} seconds.
+      
+
+      Start
+      Pause
+    
+
+  );
+}
+</code></pre></div><p>这里可以看到，我们使用了 useRef 来创建了一个保存 window.setInterval 返回句柄的空间，从而能够在用户点击暂停按钮时清除定时器，达到暂停计时的目的。</p> <p>同时你也可以看到，<strong>使用 useRef 保存的数据一般是和 UI 的渲染无关的，因此当 ref 的值发生变化时，是不会触发组件的重新渲染的，这也是 useRef 区别于 useState 的地方</strong>。</p> <p>除了存储<strong>跨渲染</strong>的数据之外，useRef还有一个重要的功能，<strong>就是保存某个 DOM 节点的引用</strong>。我们知道，在React 中，几乎不需要关心真实的 DOM 节点是如何渲染和修改的。但是在某些场景中，我们必须要获得真实 DOM 节点的引用，所以结合 React 的 ref属性和 useRef 这个 Hook，我们就可以获得真实的 DOM 节点，并对这个节点进行操作。</p> <p>比如说，你需要在点击某个按钮时让某个输入框获得焦点，可以通过下面的代码来实现：</p> <div class="language- extra-class"><pre class="language-text"><code>function TextInputWithFocusButton() {
+  const inputEl = useRef(null);
+  const onButtonClick = () =&gt; {
+    // current 属性指向了真实的 input 这个 DOM 节点，从而可以调用 focus 方法
+    inputEl.current.focus();
+  };
+  return (
+    &lt;&gt;
+      
+
+      Focus the input
+    
+  );
+}
+
+</code></pre></div><p>这段代码是 React 官方文档提供的一个例子，可以看到ref 这个属性提供了获得 DOM 节点的能力，并利用 useRef 保存了这个节点的应用。这样的话，一旦 input 节点被渲染到界面上，那我们通过 inputEl.current 就能访问到真实的 DOM 节点的实例了。</p> <h3 id="usecontext：定义全局状态"><a href="#usecontext：定义全局状态" class="header-anchor">#</a> useContext：定义全局状态</h3> <p>React 组件之间的状态传递只有一种方式，那就是通过 props。这就意味着这种传递关系只能在父子组件之间进行。</p> <p>看到这里你肯定会问，如果要跨层次，或者同层的组件之间要进行数据的共享，那应该如何去实现呢？这其实就涉及到一个新的命题：全局状态管理。</p> <p>为此，React 提供了 Context 这样一个机制，能够让所有在某个组件开始的组件树上创建一个 Context。这样这个组件树上的所有组件，就都能访问和修改这个 Context了。那么在函数组件里，我们就可以使用 useContext 这样一个 Hook 来管理 Context。</p> <p>useContext 的API 签名如下：</p> <div class="language- extra-class"><pre class="language-text"><code>const value = useContext(MyContext);
+</code></pre></div><p>正如刚才提到的，一个 Context 是从某个组件为根组件的组件树上可用的，所以我们需要有 API 能够创建一个 Context，这就是 React.createContext API，如下：</p> <div class="language- extra-class"><pre class="language-text"><code>const MyContext = React.createContext(initialValue);
+</code></pre></div><p>这里的 MyContext 具有一个 Provider 的属性，一般是作为组件树的根组件。这里我仍然以 React 官方文档的例子来讲解，即：一个主题的切换机制。代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>const themes = {
+  light: {
+    foreground: &quot;#000000&quot;,
+    background: &quot;#eeeeee&quot;
+  },
+  dark: {
+    foreground: &quot;#ffffff&quot;,
+    background: &quot;#222222&quot;
+  }
+};
+// 创建一个 Theme 的 Context
+
+const ThemeContext = React.createContext(themes.light);
+function App() {
+  // 整个应用使用 ThemeContext.Provider 作为根组件
+  return (
+    // 使用 themes.dark 作为当前 Context 
+    
+  );
+}
+
+// 在 Toolbar 组件中使用一个会使用 Theme 的 Button
+function Toolbar(props) {
+  return (
+
+  );
+}
+
+// 在 Theme Button 中使用 useContext 来获取当前的主题
+function ThemedButton() {
+  const theme = useContext(ThemeContext);
+  return (
+    
+      I am styled by theme context!
+    
+  );
+}
+</code></pre></div><p>看到这里你也许会有点好奇，Context 看上去就是一个全局的数据，为什么要设计这样一个复杂的机制，而不是直接用一个全局的变量去保存数据呢？</p> <p>答案其实很简单，就是<strong>为了能够进行数据的绑定</strong>。当这个 Context 的数据发生变化时，使用这个数据的组件就能够自动刷新。但如果没有 Context，而是使用一个简单的全局变量，就很难去实现了。</p> <p>不过刚才我们看到的其实是一个静态的使用 Context 的例子，直接用了 thems.dark 作为 Context 的值。那么如何让它变得动态呢？</p> <p>可以看到，themes.dark 是作为一个属性值传给 Provider 这个组件的，如果要让它变得动态，其实只要用一个 state 来保存，通过修改 state，就能实现动态的切换Context 的值了。而且这么做，所有用到这个Context 的地方都会自动刷新。比如这样的代码：</p> <div class="language- extra-class"><pre class="language-text"><code>function App() {
+  // 使用 state 来保存 theme 从而可以动态修改
+  const [theme, setTheme] = useState(&quot;light&quot;);
+
+  // 切换 theme 的回调函数
+  const toggleTheme = useCallback(() =&gt; {
+    setTheme((theme) =&gt; (theme === &quot;light&quot; ? &quot;dark&quot; : &quot;light&quot;));
+  }, []);
+
+  return (
+    // 使用 theme state 作为当前 Context
+    
+      Toggle Theme
+      
+    
+  );
+}
+
+</code></pre></div><p>可以看到，Context 提供了一个方便在多个组件之间共享数据的机制。不过需要注意的是，它的灵活性也是一柄双刃剑。你或许已经发现，Context 相当于提供了一个定义 React 世界中全局变量的机制，而全局变量则意味着两点：</p> <ol><li>会让调试变得困难，因为你很难跟踪某个 Context 的变化究竟是如何产生的。</li> <li>让组件的复用变得困难，因为一个组件如果使用了某个 Context，它就必须确保被用到的地方一定有这个 Context 的 Provider 在其父组件的路径上。</li></ol> <p>所以在 React 的开发中，除了像 Theme、Language 等一目了然的需要全局设置的变量外，我们很少会使用 Context 来做太多数据的共享。需要再三强调的是，<strong>Context 更多的是提供了一个强大的机制，让 React 应用具备定义全局的响应式数据的能力</strong>。</p> <h2 id="如何正确理解函数组件的生命周期？"><a href="#如何正确理解函数组件的生命周期？" class="header-anchor">#</a> 如何正确理解函数组件的生命周期？</h2> <p>React 的本质：<strong>从 Model 到 View 的映射</strong>。假设状态永远不变，那么实际上函数组件就相当于是一个模板引擎，只执行一次。但是 React 本身正是为动态的状态变化而设计的，而可能引起状态变化的原因基本只有两个：</p> <ol><li>用户操作产生的事件，比如点击了某个按钮。</li> <li>副作用产生的事件，比如发起某个请求正确返回了。</li></ol> <p>这两种事件本身并不会导致组件的重新渲染，但我们在这两种事件处理函数中，一定是因为改变了某个状态，这个状态可能是 State 或者 Context，从而导致了 UI 的重新渲染。</p> <p>比如对于在第三讲介绍的例子，一个用于显示博客文章的组件接收一个文章的 id 作为参数，然后根据这个 id 从服务器端获取文章的内容并显示出来。那么当 id 变化的时候，你就需要检测到这个变化，并重新发送请求，显示在界面上。在 Class 组件中，你通常要用如下的代码实现：</p> <div class="language- extra-class"><pre class="language-text"><code>class BlogView extends React.Component {
+  // ...
+  componentDidMount() {
+    // 组件第一次加载时去获取 Blog 数据
+    fetchBlog(this.props.id);
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.id !== this.props.id) {
+      // 当 Blog 的 id 发生变化时去获取博客文章
+      fetchBlog(this.props.id);
+    }
+  }
+  // ...
+}
+</code></pre></div><p>可以看到，在 Class 组件中，需要在两个生命周期方法中去实现副作用，一个是首次加载，另外一个则是每次 UI 更新后。而在函数组件中不再有生命周期的概念，而是提供了 useEffect 这样一个 Hook 专门用来执行副作用，因此，只需下面的代码即可实现同样的功能：</p> <div class="language- extra-class"><pre class="language-text"><code>function BlogView({ id }) {
+  useEffect(() =&gt; {
+    // 当 id 变化时重新获取博客文章
+    fetchBlog(id);
+  }, [id]); // 定义了依赖项 id
+}
+
+</code></pre></div><p>可以看到，在函数组件中你要思考的方式永远是：<strong>当某个状态发生变化时，我要做什么</strong>，而不再是在 Class 组件中的某个生命周期方法中我要做什么。</p> <h3 id="重新思考组件的生命周期"><a href="#重新思考组件的生命周期" class="header-anchor">#</a> 重新思考组件的生命周期</h3> <h4 id="构造函数"><a href="#构造函数" class="header-anchor">#</a> 构造函数</h4> <p>在所以其它代码执行之前的一次性初始化工作。在函数组件中，因为没有生命周期的机制，那么转换一下思路，其实我们要实现的是：一次性的代码执行。</p> <p>虽然没有直接的机制可以做到这一点，但是利用 useRef 这个 Hook，我们可以实现一个 useSingleton 这样的一次性执行某段代码的自定义 Hook，代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>import { useRef } from 'react';
+
+// 创建一个自定义 Hook 用于执行一次性代码
+function useSingleton(callback) {
+  // 用一个 called ref 标记 callback 是否执行过
+  const called = useRef(false);
+  // 如果已经执行过，则直接返回
+  if (called.current) return;
+  // 第一次调用时直接执行
+  callBack();
+  // 设置标记为已执行过
+  called.current = true;
+}
+
+</code></pre></div><p>从而在一个函数组件中，可以调用这个自定义 Hook 来执行一些一次性的初始化逻辑：</p> <div class="language- extra-class"><pre class="language-text"><code>import useSingleton from './useSingleton';
+
+const MyComp = () =&gt; {
+  // 使用自定义 Hook
+  useSingleton(() =&gt; {
+    console.log('这段代码只执行一次');
+  });
+
+  return (
+    
+My Component
+
+  );
+};
+</code></pre></div><h4 id="三种常用的生命周期方法"><a href="#三种常用的生命周期方法" class="header-anchor">#</a> 三种常用的生命周期方法</h4> <div class="language- extra-class"><pre class="language-text"><code>import React, { useEffect } from 'react';
+import comments from './comments';
+
+function BlogView({ id }) {
+  const handleCommentsChange = useCallback(() =&gt; {
+    // 处理评论变化的通知
+  }, []);
+  useEffect(() =&gt; {
+    // 获取博客内容
+    fetchBlog(id);
+    // 监听指定 id 的博客文章的评论变化通知
+    const listener = comments.addListener(id, handleCommentsChange);
+    
+    return () =&gt; {
+      // 当 id 发生变化时，移除之前的监听
+      comments.removeListener(listener);
+    };
+  }, [id, handleCommentsChange])
+}
+
+</code></pre></div><p>理解这一点非常重要。useEffect 中返回的回调函数，只是清理当前执行的 Effect 本身。这其实是更加语义化的，因此你不用将其映射到 componentWillUnmount，它也完全不等价于 componentWillUnmount。<strong>你只需记住它的作用就是用于清理上一次 Effect 的结果就行了</strong>，这样在实际的开发中才能够使用得更加自然和合理。</p> <h4 id="其它的生命周期方法"><a href="#其它的生命周期方法" class="header-anchor">#</a> 其它的生命周期方法</h4> <p>但是 Class 组件中还有其它一些比较少用的方法，比如 getSnapshotBeforeUpdate, componentDidCatch, getDerivedStateFromError。比较遗憾的是目前 Hooks 还没法实现这些功能。因此如果必须用到，你的组件仍然需要用类组件去实现。</p> <h4 id="已有应用是否应该迁移到-hooks？"><a href="#已有应用是否应该迁移到-hooks？" class="header-anchor">#</a> 已有应用是否应该迁移到 Hooks？</h4> <p>答案其实很明确：完全没必要。</p> <p>在 React 中，Class 组件和函数组件是完全可以共存的。对于新的功能，我会更推荐使用函数组件。而对于已有的功能，则维持现状就可以。除非要进行大的功能改变，可以顺便把相关的类组件进行重构，否则是没有必要进行迁移的。</p> <p>因为终究来说，能正确工作的代码就是好代码。React 组件的两种写法本身就可以很好地一起工作了：</p> <ol><li>类组件和函数组件可以互相引用；</li> <li>Hooks 很容易就能转换成高阶组件，并供类组件使用。</li></ol> <p>总结来说，我们完全没必要为了迁移而迁移。</p> <h2 id="自定义hooks-：四个典型的使用场景"><a href="#自定义hooks-：四个典型的使用场景" class="header-anchor">#</a> 自定义Hooks ：四个典型的使用场景</h2> <p>在遇到一个功能开发的需求时，首先问自己一个问题：<strong>这个功能中的哪些逻辑可以抽出来成为独立的 Hooks</strong>？</p> <p>Hooks 有两个非常核心的优点：</p> <ol><li>一是方便进行逻辑复用；</li> <li>二是帮助关注分离。</li></ol> <h3 id="如何创建自定义-hooks？"><a href="#如何创建自定义-hooks？" class="header-anchor">#</a> 如何创建自定义 Hooks？</h3> <p>自定义 Hooks 在形式上其实非常简单，<strong>就是声明一个名字以 use 开头的函数</strong>，比如 useCounter。这个函数在形式上和普通的 JavaScript 函数没有任何区别，你可以传递任意参数给这个 Hook，也可以返回任何值。</p> <p>但是要注意，Hooks 和普通函数在语义上是有区别的，<strong>就在于函数中有没有用到其它 Hooks</strong>。</p> <p>什么意思呢？就是说如果你创建了一个 useXXX 的函数，但是内部并没有用任何其它 Hooks，那么这个函数就不是一个 Hook，而只是一个普通的函数。但是如果用了其它 Hooks ，那么它就是一个 Hook。</p> <p>举一个简单的例子，在第3讲中我们看到过一个简单计数器的实现，当时把业务逻辑都写在了函数组件内部，但其实是可以把业务逻辑提取出来成为一个 Hook。比如下面的代码：</p> <div class="language- extra-class"><pre class="language-text"><code>import { useState, useCallback }from 'react';
+ 
+function useCounter() {
+  // 定义 count 这个 state 用于保存当前数值
+  const [count, setCount] = useState(0);
+  // 实现加 1 的操作
+  const increment = useCallback(() =&gt; setCount(count + 1), [count]);
+  // 实现减 1 的操作
+  const decrement = useCallback(() =&gt; setCount(count - 1), [count]);
+  // 重置计数器
+  const reset = useCallback(() =&gt; setCount(0), []);
+  
+  // 将业务逻辑的操作 export 出去供调用者使用
+  return { count, increment, decrement, reset };
+}
+有了这个 Hook，我们就可以在组件中使用它，比如下面的代码：
+
+import React from 'react';
+
+function Counter() {
+  // 调用自定义 Hook
+  const { count, increment, decrement, reset } = useCounter();
+
+  // 渲染 UI
+  return (
+    
+
+       - 
+      
+{count}
+
+
+       + 
+       reset 
+    
+
+  );
+}
+</code></pre></div><p>在这段代码中，我们把原来在函数组件中实现的逻辑提取了出来，成为一个单独的 Hook，<strong>一方面能让这个逻辑得到重用，另外一方面也能让代码更加语义化，并且易于理解和维护</strong>。</p> <p>从这个例子，我们可以看到自定义 Hooks 的两个特点：</p> <ol><li>名字一定是以 use 开头的函数，这样 React 才能够知道这个函数是一个 Hook；</li> <li>函数内部一定调用了其它的 Hooks，可以是内置的 Hooks，也可以是其它自定义 Hooks。这样才能够让组件刷新，或者去产生副作用。</li></ol> <h3 id="封装通用逻辑：useasync"><a href="#封装通用逻辑：useasync" class="header-anchor">#</a> 封装通用逻辑：useAsync</h3> <p>在组件的开发过程中，有一些常用的通用逻辑。过去可能会因为逻辑重用比较繁琐，而经常在每个组件中去自己实现，造成维护的困难。但现在有了 Hooks，就可以将更多的通用逻辑通过 Hooks 的形式进行封装，方便被不同的组件重用。</p> <p>比如说，在日常 UI 的开发中，有一个最常见的需求：<strong>发起异步请求获取数据并显示在界面上</strong>。在这个过程中，我们不仅要关心请求正确返回时，UI 会如何展现数据；还需要处理请求出错，以及关注 Loading 状态在 UI 上如何显示。</p> <p>我们可以重新看下在第1讲中看到的异步请求的例子，从 Server 端获取用户列表，并显示在界面上：</p> <div class="language- extra-class"><pre class="language-text"><code>import React from &quot;react&quot;;
+
+export default function UserList() {
+  // 使用三个 state 分别保存用户列表，loading 状态和错误状态
+  const [users, setUsers] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState(null);
+
+  // 定义获取用户的回调函数
+  const fetchUsers = async () =&gt; {
+    setLoading(true);
+    try {
+      const res = await fetch(&quot;https://reqres.in/api/users/&quot;);
+      const json = await res.json();
+      // 请求成功后将用户数据放入 state
+      setUsers(json.data);
+    } catch (err) {
+      // 请求失败将错误状态放入 state
+      setError(err);
+    }
+    setLoading(false);
+  };
+
+  return (
+    
+
+      
+        {loading ? &quot;Loading...&quot; : &quot;Show Users&quot;}
+      
+      {error &amp;&amp; 
+        
+Failed: {String(error)}
+
+      }
+      
+
+      
+
+        {users &amp;&amp; users.length &gt; 0 &amp;&amp;
+          users.map((user) =&gt; {
+            return 
+{user.first_name}
+;
+          })}
+      
+
+    
+
+  );
+}
+</code></pre></div><p>事实上，在处理这类请求的时候，模式都是类似的，通常都会遵循下面步骤：</p> <ol><li>创建 data，loading，error 这3个 state；</li> <li>请求发出后，设置 loading state 为 true；</li> <li>请求成功后，将返回的数据放到某个 state 中，并将 loading state 设为 false；</li> <li>请求失败后，设置 error state 为 true，并将 loading state 设为 false。</li></ol> <p>所以，通过创建一个自定义 Hook，可以很好地将这样的逻辑提取出来，成为一个可重用的模块。比如代码可以这样实现：</p> <div class="language- extra-class"><pre class="language-text"><code>import { useState } from 'react';
+
+const useAsync = (asyncFunction) =&gt; {
+  // 设置三个异步逻辑相关的 state
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  // 定义一个 callback 用于执行异步逻辑
+  const execute = useCallback(() =&gt; {
+    // 请求开始时，设置 loading 为 true，清除已有数据和 error 状态
+    setLoading(true);
+    setData(null);
+    setError(null);
+    return asyncFunction()
+      .then((response) =&gt; {
+        // 请求成功时，将数据写进 state，设置 loading 为 false
+        setData(response);
+        setLoading(false);
+      })
+      .catch((error) =&gt; {
+        // 请求失败时，设置 loading 为 false，并设置错误状态
+        setError(error);
+        setLoading(false);
+      });
+  }, [asyncFunction]);
+
+  return { execute, loading, data, error };
+};
+
+</code></pre></div><p>那么有了这个 Hook，我们在组件中就只需要关心与业务逻辑相关的部分。比如代码可以简化成这样的形式：</p> <div class="language- extra-class"><pre class="language-text"><code>import React from &quot;react&quot;;
+import useAsync from './useAsync';
+
+export default function UserList() {
+  // 通过 useAsync 这个函数，只需要提供异步逻辑的实现
+  const {
+    execute: fetchUsers,
+    data: users,
+    loading,
+    error,
+  } = useAsync(async () =&gt; {
+    const res = await fetch(&quot;https://reqres.in/api/users/&quot;);
+    const json = await res.json();
+    return json.data;
+  });
+  
+  return (
+    // 根据状态渲染 UI...
+  );
+}
+</code></pre></div><p>通过这个例子可以看到，我们<strong>利用了 Hooks 能够管理 React 组件状态的能力，将一个组件中的某一部分状态独立出来，从而实现了通用逻辑的重用</strong>。</p> <p>不过在这里你可能会有一个疑问：这种类型的封装我写一个工具类不就可以了？为什么一定要通过 Hooks 进行封装呢？</p> <p>答案很容易就能想到。因为在 Hooks 中，你可以管理当前组件的 state，从而将更多的逻辑写在可重用的 Hooks 中。但是要知道，在普通的工具类中是无法直接修改组件 state 的，那么也就无法在数据改变的时候触发组件的重新渲染。</p> <h3 id="监听浏览器状态：usescroll"><a href="#监听浏览器状态：usescroll" class="header-anchor">#</a> 监听浏览器状态：useScroll</h3> <p>虽然 React 组件基本上不需要关心太多的浏览器 API，但是有时候却是必须的：</p> <ul><li>界面需要根据在窗口大小变化重新布局；</li> <li>在页面滚动时，需要根据滚动条位置，来决定是否显示一个“返回顶部”的按钮。</li></ul> <p>正如 Hooks 的字面意思是“钩子”，它带来的一大好处就是：<strong>可以让 React 的组件绑定在任何可能的数据源上。这样当数据源发生变化时，组件能够自动刷新</strong>。把这个好处对应到滚动条位置这个场景就是：组件需要绑定到当前滚动条的位置数据上。</p> <div class="language- extra-class"><pre class="language-text"><code>import { useState, useEffect } from 'react';
+
+// 获取横向，纵向滚动条位置
+const getPosition = () =&gt; {
+  return {
+    x: document.body.scrollLeft,
+    y: document.body.scrollTop,
+  };
+};
+const useScroll = () =&gt; {
+  // 定一个 position 这个 state 保存滚动条位置
+  const [position, setPosition] = useState(getPosition());
+  useEffect(() =&gt; {
+    const handler = () =&gt; {
+      setPosition(getPosition(document));
+    };
+    // 监听 scroll 事件，更新滚动条位置
+    document.addEventListener(&quot;scroll&quot;, handler);
+    return () =&gt; {
+      // 组件销毁时，取消事件监听
+      document.removeEventListener(&quot;scroll&quot;, handler);
+    };
+  }, []);
+  return position;
+};
+</code></pre></div><p>有了这个 Hook，你就可以非常方便地监听当前浏览器窗口的滚动条位置了。比如下面的代码就展示了“返回顶部”这样一个功能的实现：</p> <div class="language- extra-class"><pre class="language-text"><code>import React, { useCallback } from 'react';
+import useScroll from './useScroll';
+
+function ScrollTop() {
+  const { y } = useScroll();
+
+  const goTop = useCallback(() =&gt; {
+    document.body.scrollTop = 0;
+  }, []);
+
+  const style = {
+    position: &quot;fixed&quot;,
+    right: &quot;10px&quot;,
+    bottom: &quot;10px&quot;,
+  };
+  // 当滚动条位置纵向超过 300 时，显示返回顶部按钮
+  if (y &gt; 300) {
+    return (
+      
+        Back to Top
+      
+    );
+  }
+  // 否则不 render 任何 UI
+  return null;
+}
+</code></pre></div><p>通过这个例子，我们看到了如何将浏览器状态变成可被 React 组件绑定的数据源，从而在使用上更加便捷和直观。当然，除了窗口大小、滚动条位置这些状态，还有其它一些数据也可以这样操作，比如 cookies，localStorage, URL，等等。你都可以通过这样的方法来实现。</p> <h3 id="拆分复杂组件"><a href="#拆分复杂组件" class="header-anchor">#</a> 拆分复杂组件</h3> <p>保持每个函数的短小</p> <p>做法很简单，<strong>就是尽量将相关的逻辑做成独立的 Hooks，然后在函数组中使用这些 Hooks，通过参数传递和返回值让 Hooks 之间完成交互</strong>。</p> <p>这里可以注意一点，拆分逻辑的目的不一定是为了重用，而可以是仅仅为了业务逻辑的隔离。所以在这个场景下，我们不一定要把 Hooks 放到独立的文件中，而是可以和函数组件写在一个文件中。这么做的原因就在于，这些 Hooks 是和当前函数组件紧密相关的，所以写到一起，反而更容易阅读和理解。</p> <p>为了让你对这一点有更直观的感受，我们来看一个例子。设想现在有这样一个需求：我们需要展示一个博客文章的列表，并且有一列要显示文章的分类。同时，我们还需要提供表格过滤功能，以便能够只显示某个分类的文章。</p> <p>为了支持过滤功能，后端提供了两个 API：一个用于获取文章的列表，另一个用于获取所有的分类。这就需要我们在前端将文章列表返回的数据分类 ID 映射到分类的名字，以便显示在列表里。</p> <p><strong>改变这个状况的关键仍然在于开发思路的转变。</strong> 我们要真正<strong>把 Hooks 就看成普通的函数，能隔离的尽量去做隔离</strong>，从而让代码更加模块化，更易于理解和维护。</p> <p>那么针对这样一个功能，我们甚至可以将其拆分成4个 Hooks，每一个 Hook 都尽量小，代码如下：</p> <div class="language- extra-class"><pre class="language-text"><code>import React, { useEffect, useCallback, useMemo, useState } from &quot;react&quot;;
+import { Select, Table } from &quot;antd&quot;;
+import _ from &quot;lodash&quot;;
+import useAsync from &quot;./useAsync&quot;;
+
+const endpoint = &quot;https://myserver.com/api/&quot;;
+const useArticles = () =&gt; {
+  // 使用上面创建的 useAsync 获取文章列表
+  const { execute, data, loading, error } = useAsync(
+    useCallback(async () =&gt; {
+      const res = await fetch(`${endpoint}/posts`);
+      return await res.json();
+    }, []),
+  );
+  // 执行异步调用
+  useEffect(() =&gt; execute(), [execute]);
+  // 返回语义化的数据结构
+  return {
+    articles: data,
+    articlesLoading: loading,
+    articlesError: error,
+  };
+};
+const useCategories = () =&gt; {
+  // 使用上面创建的 useAsync 获取分类列表
+  const { execute, data, loading, error } = useAsync(
+    useCallback(async () =&gt; {
+      const res = await fetch(`${endpoint}/categories`);
+      return await res.json();
+    }, []),
+  );
+  // 执行异步调用
+  useEffect(() =&gt; execute(), [execute]);
+
+  // 返回语义化的数据结构
+  return {
+    categories: data,
+    categoriesLoading: loading,
+    categoriesError: error,
+  };
+};
+const useCombinedArticles = (articles, categories) =&gt; {
+  // 将文章数据和分类数据组合到一起
+  return useMemo(() =&gt; {
+    // 如果没有文章或者分类数据则返回 null
+    if (!articles || !categories) return null;
+    return articles.map((article) =&gt; {
+      return {
+        ...article,
+        category: categories.find(
+          (c) =&gt; String(c.id) === String(article.categoryId),
+        ),
+      };
+    });
+  }, [articles, categories]);
+};
+const useFilteredArticles = (articles, selectedCategory) =&gt; {
+  // 实现按照分类过滤
+  return useMemo(() =&gt; {
+    if (!articles) return null;
+    if (!selectedCategory) return articles;
+    return articles.filter((article) =&gt; {
+      console.log(&quot;filter: &quot;, article.categoryId, selectedCategory);
+      return String(article?.category?.name) === String(selectedCategory);
+    });
+  }, [articles, selectedCategory]);
+};
+
+const columns = [
+  { dataIndex: &quot;title&quot;, title: &quot;Title&quot; },
+  { dataIndex: [&quot;category&quot;, &quot;name&quot;], title: &quot;Category&quot; },
+];
+
+export default function BlogList() {
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  // 获取文章列表
+  const { articles, articlesError } = useArticles();
+  // 获取分类列表
+  const { categories, categoriesError } = useCategories();
+  // 组合数据
+  const combined = useCombinedArticles(articles, categories);
+  // 实现过滤
+  const result = useFilteredArticles(combined, selectedCategory);
+
+  // 分类下拉框选项用于过滤
+  const options = useMemo(() =&gt; {
+    const arr = _.uniqBy(categories, (c) =&gt; c.name).map((c) =&gt; ({
+      value: c.name,
+      label: c.name,
+    }));
+    arr.unshift({ value: null, label: &quot;All&quot; });
+    return arr;
+  }, [categories]);
+
+  // 如果出错，简单返回 Failed
+  if (articlesError || categoriesError) return &quot;Failed&quot;;
+
+  // 如果没有结果，说明正在加载
+  if (!result) return &quot;Loading...&quot;;
+
+  return (
+</code></pre></div><h2 id="全局状态管理：如何在函数组件中使用-redux？"><a href="#全局状态管理：如何在函数组件中使用-redux？" class="header-anchor">#</a> 全局状态管理：如何在函数组件中使用 Redux？</h2> <p><img src="/yublog/assets/img/redux.6a95506d.png" alt="redux"></p> <h5 id="redux-store-的两个特点"><a href="#redux-store-的两个特点" class="header-anchor">#</a> Redux Store 的两个特点</h5> <ol><li>Redux Store 是全局唯一的。即整个应用程序一般只有一个 Store。</li> <li>Redux Store 是树状结构，可以更天然地映射到组件树的结构，虽然不是必须的。</li></ol> <p>我们通过把状态放在组件之外，就可以让 React 组件成为更加纯粹的表现层，那么很多对于业务数据和状态数据的管理，就都可以在组件之外去完成（后面课程会介绍的 Reducer 和 Action）。同时这也天然提供了状态共享的能力，有两个场景可以典型地体现出这一点。</p> <ol><li>跨组件的状态共享：当某个组件发起一个请求时，将某个 Loading 的数据状态设为 True，另一个全局状态组件则显示 Loading 的状态。</li> <li>同组件多个实例的状态共享：某个页面组件初次加载时，会发送请求拿回了一个数据，切换到另外一个页面后又返回。这时数据已经存在，无需重新加载。设想如果是本地的组件 state，那么组件销毁后重新创建，state 也会被重置，就还需要重新获取数据。</li></ol> <h3 id="理解-redux-的三个基本概念"><a href="#理解-redux-的三个基本概念" class="header-anchor">#</a> 理解 Redux 的三个基本概念</h3> <p>Redux 引入的概念其实并不多，主要就是三个：State、Action 和 Reducer。</p> <ul><li>其中 State 即 Store，一般就是一个纯 JavaScript Object</li> <li>Action 也是一个 Object，用于描述发生的动作。</li> <li>而 Reducer 则是一个函数，接收 Action 和 State 并作为参数，通过计算得到新的 Store。</li></ul> <p>它们三者之间的关系可以用下图来表示：
+<img src="data:image/png;base64,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" alt="redux-relation.png"></p> <p>在 Redux 中，所有对于 Store 的修改都必须通过这样一个公式去完成，即通过 Reducer 完成，而不是直接修改 Store。这样的话，一方面可以保证数据的不可变性（Immutable），同时也能带来两个非常大的好处。</p> <ol><li>可预测性（Predictable）：即给定一个初始状态和一系列的 Action，一定能得到一致的结果，同时这也让代码更容易测试。</li> <li>易于调试：可以跟踪 Store 中数据的变化，甚至暂停和回放。因为每次 Action 产生的变化都会产生新的对象，而我们可以缓存这些对象用于调试。Redux 的基于浏览器插件的开发工具就是基于这个机制，非常有利于调试。</li></ol> <p>这么抽象的解释，你可能不好理解，别着急，我给你举个例子，来帮助你理解这几个概念。这个例子是开发一个计数器的逻辑。比如说要实现“加一”和“减一”这两个功能，对于 Redux 来说，我们需要如下代码：</p> <div class="language- extra-class"><pre class="language-text"><code>import { createStore } from 'redux'
+
+// 定义 Store 的初始值
+const initialState = { value: 0 }
+
+// Reducer，处理 Action 返回新的 State
+function counterReducer(state = initialState, action) {
+  switch (action.type) {
+    case 'counter/incremented':
+      return { value: state.value + 1 }
+    case 'counter/decremented':
+      return { value: state.value - 1 }
+    default:
+      return state
+  }
+}
+
+// 利用 Redux API 创建一个 Store，参数就是 Reducer
+const store = createStore(counterReducer)
+
+// Store 提供了 subscribe 用于监听数据变化
+store.subscribe(() =&gt; console.log(store.getState()))
+
+// 计数器加 1，用 Store 的 dispatch 方法分发一个 Action，由 Reducer 处理
+const incrementAction = { type: 'counter/incremented' };
+store.dispatch(incrementAction);
+// 监听函数输出：{value: 1}
+
+// 计数器减 1
+const decrementAction = { type: 'counter/decremented' };
+store.dispatch(decrementAction)
+// 监听函数输出：{value: 0}
+</code></pre></div><p>通过这段代码，我们就用三个步骤完成了一个完整的 Redux 的逻辑：</p> <ol><li>先创建 Store；</li> <li>再利用 Action 和 Reducer 修改 Store；</li> <li>最后利用 subscribe 监听 Store 的变化。</li></ol> <p>需要注意的是，<strong>在 Reducer 中，我们每次都必须返回一个新的对象，确保不可变数据（Immutable）的原则</strong>。一般来说，我们可以用延展操作符（Spread Operator）来简单地实现不可变数据的操作，例如：</p> <div class="language- extra-class"><pre class="language-text"><code>return {
+  ...state, // 复制原有的数据结构
+  value: state.value + 1, // 变化 value 值使其 + 1
+}
+</code></pre></div><p>这在大多数场景下已经足够使用。当然对于复杂的数据结构，也有一些第三方的库可以帮助操作不可变数据，比如 Immutable、Immer 等等。</p> <p>通过这个例子，我们看到了纯 Redux 使用的场景，从而更加清楚地看到了 Store、Action 和 Reducer 这三个基本概念，也就能理解 State + Action =&gt; New State 这样一个简单却核心的机制。</p> <h3 id="如何在-react-中使用-redux"><a href="#如何在-react-中使用-redux" class="header-anchor">#</a> 如何在 React 中使用 Redux</h3> <p>主要是两点：</p> <ol><li>React 组件能够在依赖的 Store 的数据发生变化时，重新 Render；</li> <li>在 React 组件中，能够在某些时机去 dispatch 一个 action，从而触发 Store 的更新。</li></ol> <p>要实现这两点，我们需要引入 Facebook 提供的 react-redux 这样一个工具库，工具库的作用就是建立一个桥梁，让 React 和 Redux 实现互通。</p> <p>在 react-redux 的实现中，为了确保需要绑定的组件能够访问到全局唯一的 Redux Store，利用了 React 的 Conext 机制去存放 Store 的信息。通常我们会将这个 Context 作为整个 React 应用程序的根节点。因此，作为 Redux 的配置的一部分，我们通常需要如下的代码：</p> <div class="language- extra-class"><pre class="language-text"><code>import React from 'react'
+import ReactDOM from 'react-dom'
+
+import { Provider } from 'react-redux'
+import store from './store'
+
+import App from './App'
+
+const rootElement = document.getElementById('root')
+ReactDOM.render(
+  &lt;Provider store={store}&gt;
+    &lt;App /&gt;
+  &lt;/Provider&gt;,
+  rootElement
+)
+</code></pre></div><p>这里使用了 Provider 这样一个组件来作为整个应用程序的根节点，并将 Store 作为属性传给了这个组件，这样所有下层的组件就都能够使用 Redux 了。</p> <p>完成了这样的配置之后，在函数组件中使用 Redux 就非常简单了：利用 react-redux 提供的 useSelector 和 useDispatch 这两个 Hooks。</p> <p>在第二讲我们已经提到，Hooks 的本质就是提供了让 React 组件能够绑定到某个可变的数据源的能力。在这里，当 Hooks 用到 Redux 时可变的对象就是 Store，而 useSelector 则让一个组件能够在 Store 的某些数据发生变化时重新 render。</p> <div class="language- extra-class"><pre class="language-text"><code>import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+
+export function Counter() {
+  // 从 state 中获取当前的计数值
+  const count = useSelector(state =&gt; state.value)
+
+  // 获得当前 store 的 dispatch 方法
+  const dispatch = useDispatch()
+
+  // 在按钮的 click 时间中去分发 action 来修改 store
+  return (
+    &lt;div&gt;
+      &lt;button
+        onClick={() =&gt; dispatch({ type: 'counter/incremented' })}
+      &gt;+&lt;/button&gt;
+      &lt;span&gt;{count}&lt;/span&gt;
+      &lt;button
+        onClick={() =&gt; dispatch({ type: 'counter/decremented' })}
+      &gt;-&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+</code></pre></div><p><img src="data:image/png;base64,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" alt="single-data-stream.png"></p> <h3 id="使用-redux-处理异步逻辑"><a href="#使用-redux-处理异步逻辑" class="header-anchor">#</a> 使用 Redux 处理异步逻辑</h3> <p>在 Redux 中，处理异步逻辑也常常被称为<strong>异步 Action</strong>，它几乎是 React 面试中必问的一道题，可以认为这是 Redux 使用的进阶场景。</p> <p>在 Redux 的 Store 中，我们不仅维护着业务数据，同时维护着应用程序的状态。比如对于发送请求获取数据这样一个异步的场景，我们来看看涉及到 Store 数据会有哪些变化：</p> <ol><li>请求发送出去时：设置 state.pending = true，用于 UI 显示加载中的状态；</li> <li>请求发送成功时：设置 state.pending = false, state.data = result。即取消 UI 的加载状态，同时将获取的数据放到 store 中用于 UI 的显示。</li> <li>请求发送失败时：设置 state.pending = false, state.error = error。即取消 UI 的加载状态，同时设置错误的状态，用于 UI 显示错误的内容。</li></ol> <p>前面提到，任何对 Store 的修改都是由 action 完成的。那么对于一个异步请求，上面的三次数据修改显然必须要三个 action 才能完成。那么假设我们在 React 组件中去做这个发起请求的动作，代码逻辑应该类似如下：</p> <p>前面提到，任何对 Store 的修改都是由 action 完成的。那么对于一个异步请求，上面的三次数据修改显然必须要三个 action 才能完成。那么假设我们在 React 组件中去做这个发起请求的动作，代码逻辑应该类似如下：</p> <div class="language- extra-class"><pre class="language-text"><code>
+function DataList() {
+  const dispatch = useDispatch();
+  // 在组件初次加载时发起请求
+  useEffect(() =&gt; {
+    // 请求发送时
+    dispatch({ type: 'FETCH_DATA_BEGIN' });
+    fetch('/some-url').then(res =&gt; {
+      // 请求成功时
+      dispatch({ type: 'FETCH_DATA_SUCCESS', data: res });
+    }).catch(err =&gt; {
+      // 请求失败时
+      dispatch({ type: 'FETCH_DATA_FAILURE', error: err });
+    })
+  }, []);
+  
+  // 绑定到 state 的变化
+  const data = useSelector(state =&gt; state.data);
+  const pending = useSelector(state =&gt; state.pending);
+  const error = useSelector(state =&gt; state.error);
+  
+  // 根据 state 显示不同的状态
+  if (error) return 'Error.';
+  if (pending) return 'Loading...';
+  return &lt;Table data={data} /&gt;;
+}
+</code></pre></div><p>从这段代码可以看到，我们使用了三个（同步）Action 完成了这个异步请求的场景。这里我们将 Store 完全作为一个存放数据的地方，至于数据哪里来， Redux 并不关心。尽管这样做是可行的。</p> <p>但是很显然，发送请求获取数据并进行错误处理这个逻辑是不可重用的。假设我们希望在另外一个组件中也能发送同样的请求，就不得不将这段代码重新实现一遍。因此，Redux 中提供了 middleware 这样一个机制，让我们可以巧妙地实现所谓异步 Action 的概念。</p> <p>简单来说，middleware 可以让你提供一个拦截器在 reducer 处理 action 之前被调用。在这个拦截器中，你可以自由处理获得的 action。无论是把这个 action 直接传递到 reducer，或者构建新的 action 发送到 reducer，都是可以的。</p> <p>从下面这张图可以看到，Middleware 正是在 Action 真正到达 Reducer 之前提供的一个额外处理 Action 的机会：
+<img src="data:image/png;base64,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" alt="middlewares.png"></p> <p>我们刚才也提到了，<strong>Redux 中的 Action 不仅仅可以是一个 Object，它可以是任何东西，也可以是一个函数。利用这个机制，Redux 提供了 redux-thunk 这样一个中间件，它如果发现接受到的 action 是一个函数，那么就不会传递给 Reducer，而是执行这个函数，并把 dispatch 作为参数传给这个函数，从而在这个函数中你可以自由决定何时，如何发送 Action</strong>。</p> <p>例如对于上面的场景，假设我们在创建 Redux Store 时指定了 redux-thunk 这个中间件：</p> <div class="language- extra-class"><pre class="language-text"><code>import { createStore, applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk'
+import rootReducer from './reducer'
+
+const composedEnhancer = applyMiddleware(thunkMiddleware)
+const store = createStore(rootReducer, composedEnhancer)
+</code></pre></div><p>那么在我们 dispatch action 时就可以 dispatch 一个函数用于来发送请求，通常，我们会写成如下的结构：</p> <div class="language- extra-class"><pre class="language-text"><code>function fetchData() {
+  return dispatch =&gt; {
+    dispatch({ type: 'FETCH_DATA_BEGIN' });
+    fetch('/some-url').then(res =&gt; {
+      dispatch({ type: 'FETCH_DATA_SUCCESS', data: res });
+    }).catch(err =&gt; {
+      dispatch({ type: 'FETCH_DATA_FAILURE', error: err });
+    })
+  }
+}
+</code></pre></div><p>那么在我们 dispatch action 时就可以 dispatch 一个函数用于来发送请求，通常，我们会写成如下的结构：</p> <div class="language- extra-class"><pre class="language-text"><code>import fetchData from './fetchData';
+
+function DataList() {
+  const dispatch = useDispatch();
+  // dispatch 了一个函数由 redux-thunk 中间件去执行
+  dispatch(fetchData());
+}
+</code></pre></div><p>可以看到，通过这种方式，我们就实现了异步请求逻辑的重用。那么这一套结合 redux-thunk 中间件的机制，我们就称之为异步 Action。</p> <p>所以说异步 Action 并不是一个具体的概念，而可以把它看作是 Redux 的一个使用模式。它通过组合使用同步 Action ，在没有引入新概念的同时，用一致的方式提供了处理异步逻辑的方案。</p> <h2 id="复杂状态处理：如何保证状态一致性？"><a href="#复杂状态处理：如何保证状态一致性？" class="header-anchor">#</a> 复杂状态处理：如何保证状态一致性？</h2> <p>该怎么去用最优、最合理的方式，去管理你的应用程序的状态。</p> <h4 id="原则一：保证状态最小化"><a href="#原则一：保证状态最小化" class="header-anchor">#</a> 原则一：保证状态最小化</h4> <p>新接触 React 的同学经常会有一个错误的习惯，就是把 State 当变量用，很容易把过多的数据放到 State 里，可以说这是对 State 的一种滥用。</p> <p>那到底该怎么使用 State 呢？我们需要遵循一个原则，即：<strong>在保证 State 完整性的同时，也要保证它的最小化</strong>。什么意思呢？</p> <p>就是说，某些数据如果能从已有的 State 中计算得到，那么我们就应该始终在用的时候去计算，而不要把计算的结果存到某个 State 中。这样的话，才能简化我们的状态处理逻辑。</p> <p>举个例子。你要做一个功能，需要对一个列表的结果进行关键字搜索，我们假设是一个显示电影标题的列表，需要能够对标题进行搜索。最终的效果如下图所示：</p> <p><img src="/yublog/assets/img/movies.9d521cea.png" alt="movies.png"></p> <p>按照 React 的状态驱动 UI 的思想，第一步就是要考虑整个功能有哪几个状态。直观上来说，页面可能包含三个状态：</p> <ol><li>电影列表的数据：可能来自某个 API 请求；</li> <li>用户输入的关键字：来自用户的输入；</li> <li>搜索的结果数据：来自原始数据结合关键字的过滤结果。</li></ol> <div class="language- extra-class"><pre class="language-text"><code>import React, { useState, useMemo } from &quot;react&quot;;
+
+function FilterList({ data }) {
+  const [searchKey, setSearchKey] = useState(&quot;&quot;);
+  
+  // 每当 searchKey 或者 data 变化的时候，重新计算最终结果
+  const filtered = useMemo(() =&gt; {
+    return data.filter((item) =&gt;
+      item.title.toLowerCase().includes(searchKey.toLowerCase())
+    );
+  }, [searchKey, data]);
+
+  return (
+    &lt;div className=&quot;08-filter-list&quot;&gt;
+      &lt;h2&gt;Movies&lt;/h2&gt;
+      &lt;input
+        value={searchKey}
+        placeholder=&quot;Search...&quot;
+        onChange={(evt) =&gt; setSearchKey(evt.target.value)}
+      /&gt;
+      &lt;ul style={{ marginTop: 20 }}&gt;
+        {filtered.map((item) =&gt; (
+          &lt;li key={item.id}&gt;{item.title}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre></div><p>虽然这是一个比较简单的例子，但是在实际开发的过程中，很多复杂场景之所以变得复杂，如果抽丝剥茧来看，你会发现它们都有<strong>定义多余状态现象的影子</strong>，而问题的根源就在于<strong>它们没有遵循状态最小化的原则</strong>。</p> <p><strong>这个状态是必须的吗？是否能通过计算得到呢？</strong></p> <h4 id="原则二：避免中间状态，确保唯一数据源"><a href="#原则二：避免中间状态，确保唯一数据源" class="header-anchor">#</a> 原则二：避免中间状态，确保唯一数据源</h4> <p>还是拿刚才讲的可搜索电影列表的例子来说，我们需要在用户体验上做一个改进，要让搜索的结果做到可分享。这个功能就类似 Baidu 这样的搜索引擎，通过一个链接就能分享搜索结果。比如说，你通过“http://www.baidu.com/s?wd= 极客时间”就可以看到极客时间的搜索结果。</p> <p><strong>我们要有更加完善的机制，让在 URL 不管因为什么原因而发生变化的时候，都能同步查询参数到 searchKey 这个 State。</strong></p> <p>其实，从根源上来说，产生这个复杂度的问题在于我们定义了 searchKey 这样一个多余的中间状态，而且这个 searchKey 状态来源于两个数据源：一是用户输入；二是 URL 上的参数。这就导致逻辑非常复杂。</p> <p>那么<strong>如果我们遵循唯一数据源这个原则，把 URL 上的查询关键字作为唯一数据源，逻辑就会变得简单了</strong>：只需要在用户输入查询关键字时，直接去改变 URL 上的查询字符串就行。这个转变可以用下面的图做一个对比，你会更直观地理解：
+<img src="data:image/png;base64,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" alt="only-source.png"></p> <p>通过对比可以看到，左边引入了一个多余的 State 作为关键字这个状态，而为了保证一致性，就需要很多复杂的同步逻辑，比如说以下几点：</p> <ul><li>URL 变化时，同步查询关键字到 State；</li> <li>State 变化时，同步查询关键字到输入框；</li> <li>用户在输入框输入的时候，同步关键字到 URL 和 State。</li></ul> <p>但是，在去掉多余的 State 后，我们就只需要在输入框和 URL 的查询参数之间做一个同步。那么实现的代码可以简化如下：</p> <div class="language- extra-class"><pre class="language-text"><code>
+import React, { useCallback, useMemo } from &quot;react&quot;;
+import { useSearchParam } from &quot;react-use&quot;;
+
+function SearchBox({ data }) {
+  // 使用 useSearchParam 这个 Hook 用于监听查询参数变化
+  const searchKey = useSearchParam(&quot;key&quot;) || &quot;&quot;;
+  const filtered = useMemo(() =&gt; {
+    return data.filter((item) =&gt;
+      item.title.toLowerCase().includes(searchKey.toLowerCase())
+    );
+  }, [searchKey, data]);
+
+  const handleSearch = useCallback((evt) =&gt; {
+    // 当用户输入时，直接改变 URL
+    window.history.pushState(
+      {},
+      &quot;&quot;,
+      `${window.location.pathname}?key=${evt.target.value}`
+    );
+  }, []);
+  return (
+    &lt;div className=&quot;08-filter-list&quot;&gt;
+      &lt;h2&gt;Movies (Search key from URL)&lt;/h2&gt;
+      &lt;input
+        value={searchKey}
+        placeholder=&quot;Search...&quot;
+        onChange={handleSearch}
+      /&gt;
+      &lt;ul style={{ marginTop: 20 }}&gt;
+        {filtered.map((item) =&gt; (
+          &lt;li key={item.id}&gt;{item.title}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre></div><p>可以看到，当用户输入参数的时候，我们是直接改变当前的 URL，而不是去改变一个内部的状态。所以当 URL 变化的时候，我们使用了 useSearchParam 这样一个第三方的 Hook 去绑定查询参数，并将其显示在输入框内，从而实现了输入框内容和查询关键字这个状态的同步。</p> <p>从本质上来说，这个例子展示了确保状态唯一数据源的重要性。我们是直接将 URL 作为唯一的数据来源，那么状态的读取和修改都是对 URL 直接进行操作，而不是通过一个中间的状态。这样就简化了状态的管理，保证了状态的一致性。</p> <h3 id="实战演练：创建自定义受控组件"><a href="#实战演练：创建自定义受控组件" class="header-anchor">#</a> 实战演练：创建自定义受控组件</h3> <p>首先我要解释下什么是受控组件。在 React 中，对表单组件的处理可以分为两种，受控组件和非受控组件：</p> <ol><li><p>受控组件：组件的展示完全由传入的属性决定。比如说，如果一个输入框中的值完全由传入的 value 属性决定，而不是由用户输入决定，那么就是受控组件，写法是：&lt; input value={value} onChange={handleChange} /&gt;。这也是为什么只给 &lt; input/&gt; 传了一个 value 值但是没有传 onChange 事件，那么键盘怎么输入都没有反应。</p></li> <li><p>非受控组件：表单组件可以有自己的内部状态，而且它的展示值是不受控的。比如 input 在非受控状态下的写法是：&lt; input onChange={handleChange}/&gt;。也就是说，父组件不会把 value 直接传递给 input 组件。</p></li></ol> <p>这个例子就是创建一个受控表单组件。比如，一个用于输入价格的表单组件，需要用户既能输入价格的数量，还能选择货币的种类，最终的效果类似下面这个图：
+<img src="data:image/png;base64,UklGRnQDAABXRUJQVlA4TGcDAAAv38EWAAWl27aNSdb6A183Wl+rbNs2WrZbtuvZtm3bKNu2bbsizhgR9577xcvvy3HjKSL678BtJEVy9/JBHfM9QAreKvqv6L+ivaZ5VZXKc95VpTHfuo8tHW6ff/nghZ28ey8fl6z7es8V/dJLWv9325tPX7PdXPzWO9vS4orhQTKfvWfW+18v3GP5MRvjpOJ8NsWqrAVWwM9X3kyQj+CMfWaUAQi+c8bwH5dQq8puQwA8oXgDmJjVC6Um3k6K+Sh+AYIAeN8Zw68QLLbVUbSJALpeSoTbT6G4GsDH6cxPwElnDA/S9Fauru3/qgaUsbHXchTN/B07dmxc/BjwcBJsqY/mJXhQsvUNPOKM4UFa2RkuloH9tsctL6gOmVFWQaOo5jtClLDNQFjf1hEOGPclAWHaGcOjyN3wpqFOqCw2pZGblIHL0QzhLc1bDC1ZS2HQuRmWOwFNzThjYJ8zhk8ZAy+bZsEew354wS2TIow6oPVbwNAStX3gFhHbQRhqehJ+ccbwKMdTsNi0Dh4zPEGww+19GBdtK+RaG2B+CR+QZhNMVU7PR84YvuTKtk9TUOOWKVPGWqzB2L2Kpz7++OP3nu8JVQ5KpHrLbD1CbCyFh03fwOvOGF51QOEGMcldsDtrByxRaHVUJK/WhvhYDE+ZfocXnDE8SvDEdbFtNBfvJ5WOJPg9z7aHGNkID5m+hHecMfxHeO+9d49LARtEFFLBWKzADNH8tHXr1o1L360DbMivrSFOToAV6A34yhnDk1bfGgrBbtV9ucWNsFb2undyYyj0ksitDbFyB0aYHoP5zhi+tJM7vaDCBc02eFTmUkaikM2QkuhtD/EiKeqbhsJpZwxvOqDzIXTPKKQKdTIh90ZzE8jk0eYQN71hT85VKOOM4VHvi/4GvKd5GD6C7dGsgOYieXRuiJ3lMDnnVbjbGcOn3vceAcEpxW6AGhLJ0QowS/LqtyR+pCnMOnH+JeCUM4ZPORvAIIXUAZ5wGD1z5swZYzoDqWN5fq8gjlYGmPWdO4ZPkU+BXxRPAAd0ai2VhLgLzlkRDrQCqPG7O4Zfka4QprOa5uyDpmKantUfAAhqdH/2dKy/95VHXV258kDaGaPw/d7m/+f6p+l35ZK8f5cpdP/XpRD+XyZ/nZGCt4r+K/rv/98JAA==" alt="currency.png"></p> <div class="language- extra-class"><pre class="language-text"><code>
+import React, { useState, useCallback } from &quot;react&quot;;
+
+function PriceInput({
+  // 定义默认的 value 的数据结构
+  value = { amount: 0, currency: &quot;rmb&quot; },
+  // 默认不处理 onChange 事件
+  onChange = () =&gt; {}
+}) {
+  // 定义一个事件处理函数统一处理 amount 或者 currency 变化的场景
+  const handleChange = useCallback(
+    (deltaValue) =&gt; {
+      // 直接修改外部的 value 值，而不是定义内部 state
+      onChange({
+        ...value,
+        ...deltaValue
+      });
+    },
+    [value, onChange]
+  );
+  return (
+    &lt;div className=&quot;exp-02-price-input&quot;&gt;
+      {/* 输入价格的数量 */}
+      &lt;input
+        value={value.amount}
+        onChange={(evt) =&gt; handleChange({ amount: evt.target.value })}
+      /&gt;
+      {/* 选择货币种类*/}
+      &lt;select
+        value={value.currency}
+        onChange={(evt) =&gt; handleChange({ currency: evt.target.value })}
+      &gt;
+        &lt;option value=&quot;rmb&quot;&gt;RMB&lt;/option&gt;
+        &lt;option value=&quot;dollar&quot;&gt;Dollar&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre></div><p>可以看到，这个自定义组件包含了 input 和 select 两个基础组件，分别用来输入价格数量和选择货币。在它们发生变化的时候，直接去触发 onChange 事件让父组件去修改 value 值；同样的，它们自己显示的值，则完全来自于传递进来的 value 属性。所以这其中的思考逻辑在于：</p> <ol><li>避免多余的状态：我们不需要在 PriceInput 这个自定义组件内部，去定义状态用于保存的 amount 或者 currency。</li> <li>找到准确的唯一数据源：这里内部两个基础组件的值，其准确且唯一的来源就是 value 属性，而不是其它的任何中间状态。</li></ol> <h2 id="异步处理：如何向服务器端发送请求？"><a href="#异步处理：如何向服务器端发送请求？" class="header-anchor">#</a> 异步处理：如何向服务器端发送请求？</h2> <h3 id="实现自己的-api-client"><a href="#实现自己的-api-client" class="header-anchor">#</a> 实现自己的 API Client</h3> <p>无论大小项目，在开始实现第一个请求的时候，通常我们要做的第一件事应该都是<strong>创建一个自己的 API Client，之后所有的请求都会通过这个 Client 发出去</strong>。而不是上来就用 fetch 或者是 axios 去直接发起请求，因为那会造成大量的重复代码。</p> <p>实现这样一个 Client 之后，你就有了一个统一的地方，去对你需要连接的服务端做一些通用的配置和处理，比如 Token、URL、错误处理等等。</p> <p>通常来说，会包括以下几个方面：</p> <ol><li>一些通用的 Header。比如 Authorization Token。</li> <li>服务器地址的配置。前端在开发和运行时可能会连接不同的服务器，比如本地服务器或者测试服务器，此时这个 API Client 内部可以根据当前环境判断该连接哪个 URL。</li> <li>请求未认证的处理。比如如果 Token 过期了，需要有一个统一的地方进行处理，这时就会弹出对话框提示用户重新登录。</li></ol> <p>我的经验来看，我更推荐把 axios 作为基础来实现这个功能。原因就在于，axios 比起 fetch，提供了更为方便，也更加语义化的 API，比如请求拦截。此外，还很容易创建多个实例，让代码逻辑更简洁。所以我就以 axios 为例，提供一个示例实现：</p> <div class="language- extra-class"><pre class="language-text"><code>
+import axios from &quot;axios&quot;;
+
+// 定义相关的 endpoint
+const endPoints = {
+  test: &quot;https://60b2643d62ab150017ae21de.mockapi.io/&quot;,
+  prod: &quot;https://prod.myapi.io/&quot;,
+  staging: &quot;https://staging.myapi.io/&quot;
+};
+
+// 创建 axios 的实例
+const instance = axios.create({
+  // 实际项目中根据当前环境设置 baseURL
+  baseURL: endPoints.test,
+  timeout: 30000,
+  // 为所有请求设置通用的 header
+  headers: { Authorization: &quot;Bear mytoken&quot; }
+});
+
+// 听过 axios 定义拦截器预处理所有请求
+instance.interceptors.response.use(
+  (res) =&gt; {
+    // 可以假如请求成功的逻辑，比如 log
+    return res;
+  },
+  (err) =&gt; {
+    if (err.response.status === 403) {
+      // 统一处理未授权请求，跳转到登录界面
+      document.location = '/login';
+    }
+    return Promise.reject(err);
+  }
+);
+
+export default instance;
+</code></pre></div><h4 id="使用-hooks-思考异步请求：封装远程资源"><a href="#使用-hooks-思考异步请求：封装远程资源" class="header-anchor">#</a> 使用 Hooks 思考异步请求：封装远程资源</h4> <div class="language- extra-class"><pre class="language-text"><code>
+import { useState, useEffect } from &quot;react&quot;;
+import apiClient from &quot;./apiClient&quot;;
+
+// 将获取文章的 API 封装成一个远程资源 Hook
+const useArticle = (id) =&gt; {
+  // 设置三个状态分别存储 data, error, loading
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  useEffect(() =&gt; {
+    // 重新获取数据时重置三个状态
+    setLoading(true);
+    setData(null);
+    setError(null);
+    apiClient
+      .get(`/posts/${id}`)
+      .then((res) =&gt; {
+        // 请求成功时设置返回数据到状态
+        setLoading(false);
+        setData(res.data);
+      })
+      .catch((err) =&gt; {
+        // 请求失败时设置错误状态
+        setLoading(false);
+        setError(err);
+      });
+  }, [id]); // 当 id 变化时重新获取数据
+
+  // 将三个状态作为 Hook 的返回值
+  return {
+    loading,
+    error,
+    data
+  };
+};
+</code></pre></div><p>那么要显示一篇文章的时候，你的脑子里就不再是一个具体的 API 调用，而可以把它看作一个数据，只不过是个远程数据，于是很自然就有加载状态或者错误状态这些数据了。使用的时候，我们就可以把组件的表现层逻辑写得非常简洁：</p> <div class="language- extra-class"><pre class="language-text"><code>import useArticle from &quot;./useArticle&quot;;
+
+const ArticleView = ({ id }) =&gt; {
+  // 将 article 看成一个远程资源，有 data, loading, error 三个状态
+  const { data, loading, error } = useArticle(id);
+  if (error) return &quot;Failed.&quot;;
+  if (!data || loading) return &quot;Loading...&quot;;
+  return (
+    &lt;div className=&quot;exp-09-article-view&quot;&gt;
+      &lt;h1&gt;
+        {id}. {data.title}
+      &lt;/h1&gt;
+      &lt;p&gt;{data.content}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+};
+</code></pre></div><p>可以看到，有了这样一个 Hook，React 的函数组件几乎不需要有任何业务的逻辑，而只是<strong>把数据映射到 JSX 并显示出来</strong>就可以了，在使用的时候非常方便。</p> <p>这里有同学可能会问，为什么要给每个请求都定义一个 Hook 呢？我们直接提供一个通用的 Hook，比如 useRemoteData，然后把 API 地址传进去，难道不可以吗？</p> <p>不是完全不可以，但这其实是<strong>为了保证每个 Hook 自身足够简单</strong>。一般来说，为了让服务器的返回数据满足 UI 上的展现要求，通常需要进一步处理。而这个对于每个请求的处理逻辑可能都不一样，通过一定的代码重复，能够避免产生太复杂的逻辑。</p> <h3 id="多个-api-调用：如何处理并发或串行请求？"><a href="#多个-api-调用：如何处理并发或串行请求？" class="header-anchor">#</a> 多个 API 调用：如何处理并发或串行请求？</h3> <p>需要显示作者、作者头像，以及文章的评论列表。那么，作为一个完整的页面，就需要发送三个请求：</p> <ol><li>获取文章内容；</li> <li>获取作者信息，包括名字和头像的地址；</li> <li>获取文章的评论列表；</li></ol> <p>这三个请求<strong>同时包含了并发和串行的场景</strong>：文章内容和评论列表是两个可以并发的请求，它们都通过 Article ID 来获取；用户的信息需要等文章内容返回，这样才能知道作者的 ID，从而根据用户的 ID 获取用户信息，这是一个串行的场景。</p> <div class="language- extra-class"><pre class="language-text"><code>
+// 并发获取文章和评论列表
+const [article, comments] = await Promise.all([
+  fetchArticle(articleId),
+  fetchComments(articleId)
+]);
+// 得到文章信息后，通过 userId 获取用户信息
+const user = await fetchUser(article.userId);
+</code></pre></div><p>但是我们知道，<strong>React 函数组件是一个同步的函数</strong>，没有办法直接使用 await 这样的同步方法，而是要<strong>把请求通过副作用去触发</strong>。因此如果按照上面这种传统的思维，是很难把逻辑理顺的。</p> <p>这时候我们就要回到 React 的本质，那就是状态驱动 UI。这意味着我们可以<strong>从状态变化的角度去组织异步调用</strong>。</p> <p>函数组件的每一次 render，其实都提供了我们根据状态变化执行不同操作的机会，我们思考的路径，就是<strong>利用这个机制，通过不同的状态组合，来实现异步请求的逻辑</strong>。</p> <p>那么刚才这个显示作者和评论列表的业务需求，主要的实现思路就包括下面这么四点：</p> <ol><li>组件首次渲染，只有文章 ID 这个信息，产生两个副作用去获取文章内容和评论列表；</li> <li>组件首次渲染，作者 ID 还不存在，因此不发送任何请求；</li> <li>文章内容请求返回后，获得了作者 ID，然后发送请求获取用户信息；</li> <li>展示用户信息。</li></ol> <p><strong>异步请求，都是基于数据的状态去进行的</strong></p> <p>所以，在代码层面，我们首先需要对 useUser 这个 Hook 做一个改造，使得它在没有传入 ID 的情况下，就不发送请求。对比上面的 useArticle 这个 Hook，唯一的变化就是在 useEffect 里加入了ID 是否存在的判断：</p> <div class="language- extra-class"><pre class="language-text"><code>
+import { useState, useEffect } from &quot;react&quot;;
+import apiClient from &quot;./apiClient&quot;;
+
+export default (id) =&gt; {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  useEffect(() =&gt; {
+    // 当 id 不存在，直接返回，不发送请求
+    if (!id) return;
+    setLoading(true);
+    setData(null);
+    setError(null);
+    apiClient
+      .get(`/users/${id}`)
+      .then((res) =&gt; {
+        setLoading(false);
+        setData(res.data);
+      })
+      .catch((err) =&gt; {
+        setLoading(false);
+        setError(err);
+      });
+  }, [id]);
+  return {
+    loading,
+    error,
+    data
+  };
+};
+</code></pre></div><p>那么，在文章的展示页面，我们就可以使用下面的代码来实现：</p> <div class="language- extra-class"><pre class="language-text"><code>
+import { useState } from &quot;react&quot;;
+import CommentList from &quot;./CommentList&quot;;
+import useArticle from &quot;./useArticle&quot;;
+import useUser from &quot;./useUser&quot;;
+import useComments from &quot;./useComments&quot;;
+
+const ArticleView = ({ id }) =&gt; {
+  const { data: article, loading, error } = useArticle(id);
+  const { data: comments } = useComments(id);
+  const { data: user } = useUser(article?.userId);
+  if (error) return &quot;Failed.&quot;;
+  if (!article || loading) return &quot;Loading...&quot;;
+  return (
+    &lt;div className=&quot;exp-09-article-view&quot;&gt;
+      &lt;h1&gt;
+        {id}. {article.title}
+      &lt;/h1&gt;
+      {user &amp;&amp; (
+        &lt;div className=&quot;user-info&quot;&gt;
+          &lt;img src={user.avatar} height=&quot;40px&quot; alt=&quot;user&quot; /&gt;
+          &lt;div&gt;{user.name}&lt;/div&gt;
+          &lt;div&gt;{article.createdAt}&lt;/div&gt;
+        &lt;/div&gt;
+      )}
+      &lt;p&gt;{article.content}&lt;/p&gt;
+      &lt;CommentList data={comments || []} /&gt;
+    &lt;/div&gt;
+  );
+};
+</code></pre></div><h2 id="函数组件设计模式：如何应对复杂条件渲染场景？"><a href="#函数组件设计模式：如何应对复杂条件渲染场景？" class="header-anchor">#</a> 函数组件设计模式：如何应对复杂条件渲染场景？</h2> <h3 id="容器模式：实现按条件执行-hooks"><a href="#容器模式：实现按条件执行-hooks" class="header-anchor">#</a> 容器模式：实现按条件执行 Hooks</h3> <p>对话框组件，通过 visible 属性来控制是否显示。那么在 visible 为 false 的时候，其实不应该执行任何对话框内部的逻辑，因为还没展示在 UI 上。</p> <p>下面的代码会报错：</p> <div class="language- extra-class"><pre class="language-text"><code>import { Modal } from &quot;antd&quot;;
+import useUser from &quot;../09/useUser&quot;;
+
+function UserInfoModal({ visible, userId, ...rest }) {
+  // 当 visible 为 false 时，不渲染任何内容
+  if (!visible) return null;
+  // 这一行 Hook 在可能的 return 之后，会报错！
+  const { data, loading, error } = useUser(userId);
+
+  return (
+    &lt;Modal visible={visible} {...rest}&gt;
+      {/* 对话框的内容 */}
+    &lt;/Modal&gt;
+  );
+};
+</code></pre></div><p>具体做法就是<strong>把条件判断的结果放到两个组件之中，确保真正 render UI 的组件收到的所有属性都是有值的。</strong></p> <div class="language- extra-class"><pre class="language-text"><code>// 定义一个容器组件用于封装真正的 UserInfoModal
+export default function UserInfoModalWrapper({
+  visible,
+  ...rest, // 使用 rest 获取除了 visible 之外的属性
+}) {
+  // 如果对话框不显示，则不 render 任何内容
+  if (!visible) return null; 
+  // 否则真正执行对话框的组件逻辑
+  return &lt;UserInfoModal visible {...rest} /&gt;;
+}
+</code></pre></div><p><strong>还有一种做法，就是把判断条件放到 Hooks 中去。</strong></p> <div class="language- extra-class"><pre class="language-text"><code>const ArticleView = ({ id }) =&gt; {
+  const { data: article, loading } = useArticle(id);
+  let user = null;
+  if (article?.userId) user = useUser(article?.userId).data;
+  // 组件其它逻辑
+}
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>function useUser(id) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  useEffect(() =&gt; {
+    // 当 id 不存在，直接返回，不发送请求
+    if (!id) return
+    // 获取用户信息的逻辑
+  });
+}
+</code></pre></div><h3 id="使用-render-props-模式重用-ui-逻辑"><a href="#使用-render-props-模式重用-ui-逻辑" class="header-anchor">#</a> 使用 render props 模式重用 UI 逻辑</h3> <p><strong>把一个 render 函数作为属性传递给某个组件，由这个组件去执行这个函数从而 render 实际的内容。</strong></p> <p><strong>Hooks 有一个局限，那就是只能用作数据逻辑的重用,即使有了 Hooks，我们也要掌握 render props 这个设计模式的用法。</strong></p> <p><img src="data:image/png;base64,UklGRpoBAABXRUJQVlA4TI0BAAAvzUAYAIWk2bZNvfozt1YzttFTy7bNkyqrl7Rt27m92HaaeLabjj7Ut8/3znl+Ef134DaSIjnHzNgvuJJM//33C9RhQxEzuKKGQ97Xi6yixkPuVEaUyvN6Eafy3szY/It3BvdinrFDo7heRNePrwY2T3P95lkDz+tF2hxr4KuIEd1jL1iREVwvsuvHF2NUV48x/teL7vr9G1FrjXaqFEBHWTLwSjIOgZmnmn2QgRngoUwOUgd84aS6qENECuB1xYmJEicifkjsSHMxD66+Lwfm0K7xmwS8BQDPwhRzAL1iMtSv0RMiJ4D5/tXV1bs8AJdComi2T7UyP6V5Jh99gQ4qNUV3KYp10V193y8DGwMKqFgrukszdi1NGj0gtwdEUHHQI1MoB9lY3tAyB5RTeaORiRKjcQZvhcJFxweqIqBH/CdUDlR9u3MM4IH4bQHI231/2QegVgafQVqgXcQHGbhSPTU1f7kilyimX1e+nKmds+cfZfPL17+RyGaSTDZTfrKZwJTMdKxsJpf/b9oVAA==" alt></p> <p>renderProps实现：</p> <h5 id="例子1"><a href="#例子1" class="header-anchor">#</a> 例子1:</h5> <div class="language- extra-class"><pre class="language-text"><code>import { useState, useCallback } from &quot;react&quot;;
+
+function CounterRenderProps({ children }) {
+  const [count, setCount] = useState(0);
+  const increment = useCallback(() =&gt; {
+    setCount(count + 1);
+  }, [count]);
+  const decrement = useCallback(() =&gt; {
+    setCount(count - 1);
+  }, [count]);
+
+  return children({ count, increment, decrement });
+}
+
+// 如何使用
+function CounterRenderPropsExample() {
+  return (
+    &lt;CounterRenderProps&gt;
+      {({ count, increment, decrement }) =&gt; {
+        return (
+          &lt;div&gt;
+            &lt;button onClick={decrement}&gt;-&lt;/button&gt;
+            &lt;span&gt;{count}&lt;/span&gt;
+            &lt;button onClick={increment}&gt;+&lt;/button&gt;
+          &lt;/div&gt;
+        );
+      }}
+    &lt;/CounterRenderProps&gt;
+  );
+}
+</code></pre></div><p><strong>只需要把这个 render 函数作为属性传递给组件就可以了</strong></p> <h5 id="例子2"><a href="#例子2" class="header-anchor">#</a> 例子2:</h5> <div class="language- extra-class"><pre class="language-text"><code>import { Popover } from &quot;antd&quot;;
+
+function ListWithMore({ renderItem, data = [], max }) {
+  const elements = data.map((item, index) =&gt; renderItem(item, index, data));
+  const show = elements.slice(0, max);
+  const hide = elements.slice(max);
+  return (
+    &lt;span className=&quot;exp-10-list-with-more&quot;&gt;
+      {show}
+      {hide.length &gt; 0 &amp;&amp; (
+        &lt;Popover content={&lt;div style={{ maxWidth: 500 }}&gt;{hide}&lt;/div&gt;}&gt;
+          &lt;span className=&quot;more-items-wrapper&quot;&gt;
+            and{&quot; &quot;}
+            &lt;span className=&quot;more-items-trigger&quot;&gt; {hide.length} more...&lt;/span&gt;
+          &lt;/span&gt;
+        &lt;/Popover&gt;
+      )}
+    &lt;/span&gt;
+  );
+}
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>// 这里用一个示例数据
+import data from './data';
+
+function ListWithMoreExample () =&gt; {
+  return (
+    &lt;div className=&quot;exp-10-list-with-more&quot;&gt;
+      &lt;h1&gt;User Names&lt;/h1&gt;
+      &lt;div className=&quot;user-names&quot;&gt;
+        Liked by:{&quot; &quot;}
+        &lt;ListWithMore
+          renderItem={(user) =&gt; {
+            return &lt;span className=&quot;user-name&quot;&gt;{user.name}&lt;/span&gt;;
+          }}
+          data={data}
+          max={3}
+        /&gt;
+      &lt;/div&gt;
+      &lt;br /&gt;
+      &lt;br /&gt;
+      &lt;h1&gt;User List&lt;/h1&gt;
+      &lt;div className=&quot;user-list&quot;&gt;
+        &lt;div className=&quot;user-list-row user-list-row-head&quot;&gt;
+          &lt;span className=&quot;user-name-cell&quot;&gt;Name&lt;/span&gt;
+          &lt;span&gt;City&lt;/span&gt;
+          &lt;span&gt;Job Title&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;ListWithMore
+          renderItem={(user) =&gt; {
+            return (
+              &lt;div className=&quot;user-list-row&quot;&gt;
+                &lt;span className=&quot;user-name-cell&quot;&gt;{user.name}&lt;/span&gt;
+                &lt;span&gt;{user.city}&lt;/span&gt;
+                &lt;span&gt;{user.job}&lt;/span&gt;
+              &lt;/div&gt;
+            );
+          }}
+          data={data}
+          max={5}
+        /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+</code></pre></div><h2 id="事件处理：如何创建自定义事件？"><a href="#事件处理：如何创建自定义事件？" class="header-anchor">#</a> 事件处理：如何创建自定义事件？</h2> <p>在 React 中使用原生事件</p> <div class="language- extra-class"><pre class="language-text"><code>// 约定使用骆驼体（Camel Case）
+&lt;button onClick={handler}&gt;Hello&lt;/button&gt; 
+
+</code></pre></div><p>其实是否需要 useCallback ，<strong>和函数的复杂度没有必然关系，而是和回调函数绑定到哪个组件有关</strong>。这是为了避免因组件属性变化而导致不必要的重新渲染。</p> <p>而对于原生的 DOM 节点，比如 button、input 等，我们是不用担心重新渲染的。所以呢，如果你的事件处理函数是传递给原生节点，那么不写 callback，也几乎不会有任何性能的影响。</p> <p>但是<strong>如果你使用的是自定义组件，或者一些 UI 框架的组件，那么回调函数还都应该用 useCallback 进行封装</strong>。</p> <h3 id="react-原生事件的原理：合成事件（synthetic-events）"><a href="#react-原生事件的原理：合成事件（synthetic-events）" class="header-anchor">#</a> React 原生事件的原理：合成事件（Synthetic Events）</h3> <p>在 React 17 之前，所有的事件都是绑定在 document 上的，而从 React 17 开始，所有的事件都绑定在整个 App 上的根节点上</p> <ul><li>第一，虚拟 DOM render 的时候， DOM 很可能还没有真实地 render 到页面上，所以无法绑定事件。</li> <li>第二，React 可以屏蔽底层事件的细节，避免浏览器的兼容性问题。同时呢，对于 React Native 这种不是通过浏览器 render 的运行时，也能提供一致的 API。</li></ul> <p>无论事件在哪个节点被触发， React 都可以通过事件的 srcElement 这个属性</p> <h3 id="创建自定义事件"><a href="#创建自定义事件" class="header-anchor">#</a> 创建自定义事件</h3> <p>父子组件之间的通信，props 和 自定义事件</p> <h5 id="虽然自定义事件和原生事件看上去类似，但是两者的机制是完全不一样的："><a href="#虽然自定义事件和原生事件看上去类似，但是两者的机制是完全不一样的：" class="header-anchor">#</a> 虽然自定义事件和原生事件看上去类似，但是两者的机制是完全不一样的：</h5> <ul><li>原生事件是浏览器的机制；</li> <li>而自定义事件则是纯粹的组件自己的行为，本质是一种回调函数机制。</li></ul> <p>实现一个 on/off 的切换按钮</p> <div class="language- extra-class"><pre class="language-text"><code>import { useState } from &quot;react&quot;;
+
+// 创建一个无状态的受控组件
+function ToggleButton({ value, onChange }) {
+  const handleClick = () =&gt; {
+    onChange(!value);
+  };
+  return (
+    &lt;button style={{ width: &quot;60px&quot; }} onClick={handleClick}&gt;
+      &lt;span&gt;{value ? &quot;On&quot; : &quot;Off&quot;}&lt;/span&gt;
+    &lt;/button&gt;
+  );
+}
+
+
+import { useState } from &quot;react&quot;;
+import ToggleButton from './ToggleButton';
+
+function ToggleButtonExample() {
+  const [on, setOn] = useState(true);
+  return (
+    &lt;&gt;
+      &lt;h1&gt;Toggle Button&lt;/h1&gt;
+      &lt;ToggleButton value={on} onChange={(value) =&gt; setOn(value)} /&gt;
+    &lt;/&gt;
+  );
+};
+</code></pre></div><h3 id="使用-hooks-封装键盘事件开"><a href="#使用-hooks-封装键盘事件开" class="header-anchor">#</a> 使用 Hooks 封装键盘事件开</h3> <div class="language- extra-class"><pre class="language-text"><code>import { useEffect, useState } from &quot;react&quot;;
+
+// 使用 document.body 作为默认的监听节点
+const useKeyPress = (domNode = document.body) =&gt; {
+  const [key, setKey] = useState(null);
+  useEffect(() =&gt; {
+    const handleKeyPress = (evt) =&gt; {
+      setKey(evt.keyCode);
+    };
+    // 监听按键事件
+    domNode.addEventListener(&quot;keypress&quot;, handleKeyPress);
+    return () =&gt; {
+      // 接触监听按键事件
+      domNode.removeEventListener(&quot;keypress&quot;, handleKeyPress);
+    };
+  }, [domNode]);
+  return key;
+};
+
+
+import useKeyPress from './useKeyPress';
+
+function UseKeyPressExample() =&gt; {
+  const key = useKeyPress();
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;UseKeyPress&lt;/h1&gt;
+      &lt;label&gt;Key pressed: {key || &quot;N/A&quot;}&lt;/label&gt;
+    &lt;/div&gt;
+  );
+};
+</code></pre></div><h2 id="form：hooks-给-form-处理带来了哪些新变化？"><a href="#form：hooks-给-form-处理带来了哪些新变化？" class="header-anchor">#</a> Form：Hooks 给 Form 处理带来了哪些新变化？</h2> <h3 id="在表单中使用-react-组件：受控组件和非受控组件"><a href="#在表单中使用-react-组件：受控组件和非受控组件" class="header-anchor">#</a> 在表单中使用 React 组件：受控组件和非受控组件</h3> <h4 id="表单中的元素都是受控组件。也就是说，一个表单组件的状态完全由-react-管控。但是在有的时候，为了避免太多的重复渲染，我们也会选择非受控组件。"><a href="#表单中的元素都是受控组件。也就是说，一个表单组件的状态完全由-react-管控。但是在有的时候，为了避免太多的重复渲染，我们也会选择非受控组件。" class="header-anchor">#</a> 表单中的元素都是受控组件。也就是说，一个表单组件的状态完全由 React 管控。但是在有的时候，为了避免太多的重复渲染，我们也会选择非受控组件。</h4> <p><strong>受控组件</strong></p> <div class="language- extra-class"><pre class="language-text"><code>function MyForm() {
+  const [value, setValue] = useState('');
+  const handleChange = useCallback(evt =&gt; {
+    setValue(evt.target.value);
+  }, []);
+  return &lt;input value={value} onChange={handleChange} /&gt;;
+}
+</code></pre></div><p>可以看到，输入框的值是由传入的 value 属性决定的。在 onChange 的事件处理函数中，我们设置了 value 这个状态的值，这样输入框就显示了用户的输入。</p> <p>需要注意的是，React 统一了表单组件的 onChange 事件，这样的话，用户不管输入什么字符，都会触发 onChange 事件。而标准的 input 的 onchange 事件，则只有当输入框失去焦点时才会触发。React 的这种 onChange 的机制，其实让我们对表单组件有了更灵活的控制。</p> <p>不过，受控组件的这种方式虽然统一了表单元素的处理，有时候却会产生性能问题。因为用户每输入一个字符，React 的状态都会发生变化，那么整个组件就会重新渲染。所以如果表单比较复杂，那么每次都重新渲染，就可能会引起输入的卡顿。在这个时候，我们就可以将一些表单元素使用非受控组件去实现，从而避免性能问题。</p> <p><strong>非受控组件</strong>，就是表单元素的值不是由父组件决定的，而是完全内部的状态。联系第 8 讲提到的唯一数据源的原则，一般我们就不会再用额外的 state 去保存某个组件的值。而是在需要使用的时候，直接从这个组件获取值。</p> <div class="language- extra-class"><pre class="language-text"><code>import { useRef } from &quot;react&quot;;
+
+export default function MyForm() {
+  // 定义一个 ref 用于保存 input 节点的引用
+  const inputRef = useRef();
+  const handleSubmit = (evt) =&gt; {
+    evt.preventDefault();
+    // 使用的时候直接从 input 节点获取值
+    alert(&quot;Name: &quot; + inputRef.current.value);
+  };
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;label&gt;
+        Name:
+        &lt;input type=&quot;text&quot; ref={inputRef} /&gt;
+      &lt;/label&gt;
+      &lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;
+    &lt;/form&gt;
+  );
+}
+</code></pre></div><p>可以看到，通过非受控组件的方式，input 的输入过程对整个组件状态没有任何影响，自然也就不会导致组件的重新渲染。</p> <p>不过缺点也是明显的，输入过程因为没有对应的状态变化，因此要动态地根据用户输入做 UI 上的调整就无法做到了。出现这种情况，主要也是因为所有的用户输入都是 input 这个组件的内部状态，没有任何对外的交互。</p> <p>总结来说，在实际的项目中，我们一般都是用的受控组件，这也是 React 官方推荐的使用方式。不过对于一些个别的场景，比如对性能有极致的要求，那么非受控组件也是一种不错的选择。</p> <h3 id="使用-hooks-简化表单处理"><a href="#使用-hooks-简化表单处理" class="header-anchor">#</a> 使用 Hooks 简化表单处理</h3> <ul><li><ol><li>设置一个 State 用于绑定到表单元素的 value；</li></ol></li> <li><ol start="2"><li>监听表单元素的 onChange 事件，将表单值同步到 value 这个 state。</li></ol></li></ul> <div class="language- extra-class"><pre class="language-text"><code>function MyForm() {
+  const [value1, setValue1] = useState();
+  const [value2, setValue2] = useState();
+  // 更多表单元素状态...
+  
+  return (
+    &lt;form&gt;
+      &lt;Field1 value={value1} onChange={setValue1} /&gt;
+      &lt;Field1 value={value2} onChange={setValue2} /&gt;
+      {/*更多表单元素*/}
+    &lt;/form&gt;
+  )
+}
+</code></pre></div></div> <div class="page-edit"><div class="edit-link"><a href="https://github.com/sxyuzhenhua/yublog/edit/master/docs/zh/React.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></div> <!----></div> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/yublog/zh/面试.html" class="prev">
+          面试
+        </a></span> <span class="next"><a href="/yublog/zh/Redux.html">
+          Redux
+        </a>
+        →
+      </span></p></div> </div> <!----></div></div>
+    <script src="/yublog/assets/js/app.37e56814.js" defer></script><script src="/yublog/assets/js/3.a7947606.js" defer></script>
+  </body>
+</html>
